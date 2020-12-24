@@ -29,6 +29,10 @@ Route::post('deleteUsers','UserController@deleteUsers');
 
 //Books
 Route::get('books','BookController@index');
-Route::get('getBooks','BookController@getBooks');
-Route::post('updateBooks','BookController@updateBooks');
-Route::post('deleteBooks','BookController@deleteBooks');
+Route::get('getBooks','BookController@getData');
+Route::post('updateBooks','BookController@update');
+
+//Books
+Route::get('bookLogs','BookLogController@index');
+Route::get('getBookLogs','BookLogController@getData');
+Route::post('updateBookLogs','BookLogController@update');

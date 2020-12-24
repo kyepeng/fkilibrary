@@ -18,15 +18,13 @@ $(document).ready(function() {
             "url" : "{{ url('getBooks') }}"
         },
         columnDefs: [
-        { "visible": false, "targets": [1,2,3] }, 
+        { "visible": false, "targets": [1] }, 
         {"className": "dt-center", "targets": "_all"},
         { "width": "2%", "targets": [0] }
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
             { data: 'id'},
-            { data: 'shelfId'},
-            { data: 'catalogId'},
             { data: 'bookName', title: 'Name'},
             { data: 'ISBN', title: 'ISBN'},
             { data: 'description', title: 'Description'},
@@ -34,11 +32,7 @@ $(document).ready(function() {
             { data: 'quantity', title: 'Qty'},
             { data: 'catalog', title: 'Catalog'},
             { data: 'shelf', title: 'Shelf'},
-            { data: 'action', title : 'Action',
-                "render": function ( data, type, row, meta ) {
-                    return `<button class="btn btn-primary" onclick="openModal(this)" data-type="Edit" data-id="${row.id}">Edit</button> <button class="btn btn-danger" onclick="openModal(this)" data-type="Delete" data-id="${row.id}">Delete</button>`;
-                }
-            }
+            { data: 'action', title : 'Action'}
         ],
         initComplete: function () {
                 
@@ -236,13 +230,14 @@ $(document).ready(function() {
         else if(type == "Delete")
         {
             $('#modal_text').html('<h5 class="redtext">Are you sure to remove this?</h5>')
-            formfields = "";
+            formfields = `<input type="hidden" name="id" value="">`;
         }
 
         $('#form_fields').append(formfields);
 
         if(data)
         {
+            console.log(data);
             $.each(data,function(key,value){
                 $(`input[name="${key}"]`).val(value)
                 $(`select[name="${key}"]`).val(value).change();

@@ -18,27 +18,20 @@ $(document).ready(function() {
             "url" : "{{ url('getBookLogs') }}"
         },
         columnDefs: [
-        { "visible": false, "targets": [1,2,3] }, 
+        { "visible": false, "targets": [1] }, 
         {"className": "dt-center", "targets": "_all"},
         { "width": "2%", "targets": [0] }
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
             { data: 'id'},
-            { data: 'shelfId'},
-            { data: 'catalogId'},
-            { data: 'bookName', title: 'Name'},
-            { data: 'ISBN', title: 'ISBN'},
-            { data: 'description', title: 'Description'},
-            { data: 'price', title: 'Price'},
-            { data: 'quantity', title: 'Qty'},
-            { data: 'catalog', title: 'Catalog'},
-            { data: 'shelf', title: 'Shelf'},
-            { data: 'action', title : 'Action',
-                "render": function ( data, type, row, meta ) {
-                    return `<button class="btn btn-primary" onclick="openModal(this)" data-type="Edit" data-id="${row.id}">Edit</button> <button class="btn btn-danger" onclick="openModal(this)" data-type="Delete" data-id="${row.id}">Delete</button>`;
-                }
-            }
+            { data: 'book', title: 'Book Name'},
+            { data: 'student', title: 'Student'},
+            { data: 'start_date', title: 'Start Date'},
+            { data: 'end_date', title: 'End Date'},
+            { data: 'fine', title: 'Fine'},
+            { data: 'paid', title: 'Paid'},
+            { data: 'action', title : 'Action'}
         ],
         initComplete: function () {
                 
@@ -111,12 +104,12 @@ $(document).ready(function() {
 
                 <form id="upload_form" enctype="multipart/form-data" method="POST" action="">
                   {{ csrf_field() }}
-                <div id="modal_text">
+                  <div id="modal_text">
                     
-                </div>
-                <div id="form_fields">
+                  </div>
+                  <div id="form_fields">
 
-                </div>
+                  </div>
                 <br><br>
                 <div class="modal-footer">
                   <center><img src="{{asset('images/ajax-loader.gif')}}" width="50px" height="50px" alt="Loading" id="ajaxloader"></center>
@@ -190,15 +183,42 @@ $(document).ready(function() {
         $('#submitBtn').prop('disabled',false);
         $('#form_fields').empty();
         $('#modal_text').html("");
-
         appendSection(id,type);
 
         $('#ActionModal').modal('show');
     }
 
-    function appendSection(id)
+    function appendSection(id,type)
     {
         var data =  oTable.row("#"+id).data();
+        var formfields = `
+            <input type="hidden" name="id">
+            <label>Book</label>
+            <select name="bookId" class="form-control select2">
+                @foreach($books as $book)
+                <option value="{{$book->id}}">{{$book->bookName}} [{{$book->ISBN}}]</option>
+                @endforeach
+            </select>
+            <label>Student</label>
+            <select name="userId" class="form-control select2">
+                @foreach($users as $user)
+                <option value="{{$user->id}}">{{$user->name}}</option>
+                @endforeach
+            </select> 
+        `;
+
+        if( type == "Edit" )
+        {
+            formfields += `
+            <label>Action</label>
+            <select name="action" class="form-control select2">
+                <option>Renew</option>
+                <option>Return</option>
+            </select>
+            `
+        }
+
+        $('#form_fields').append(formfields);
 
         if(data)
         {
@@ -213,7 +233,7 @@ $(document).ready(function() {
     {   
         var param = {
             'data' : new FormData($("#upload_form")[0]),
-            'myurl' : "{{ url('/updateBooks') }}",
+            'myurl' : "{{ url('/updateBookLogs') }}",
             'form' : 1,
             'button' : "submitBtn",
             'modal' : "ActionModal",

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use DB;
 use Datatables;
 use Illuminate\Support\Facades\Validator;
-use Mail;
 use App\Book;
 use App\Shelf;
 use App\Catalog;
@@ -18,7 +17,7 @@ class BookController extends Controller
         $me = (new CommonController)->thisuser();
 
         $list = DB::table('books')
-        ->select(DB::raw('"" as no'),'id','shelfId','catalogId','bookName','ISBN','description','price','quantity',DB::raw('"" as catalog'),DB::raw('"" as shelf'),DB::raw('"" as action'))
+        ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','price','quantity',DB::raw('"" as catalog'),DB::raw('"" as shelf'),DB::raw('"" as action'))
         ->get();
 
         $catalog = Catalog::all();
@@ -28,7 +27,7 @@ class BookController extends Controller
         return view('books',compact('me','list','shelf','catalog'));
     }
 
-    public function getBooks()
+    public function getData()
     {
     	$me = (new CommonController)->thisuser();
 
@@ -46,17 +45,21 @@ class BookController extends Controller
             $catalog = Catalog::find($list->catalogId);
             return $catalog->catalogName;
         })
+        ->addColumn('action', function($list){
+            return '<button class="btn btn-primary" onclick="openModal(this)" data-type="Edit" data-id="'.$list->id.'">Edit</button> <button class="btn btn-danger" onclick="openModal(this)" data-type="Delete" data-id="'.$list->id.'">Delete</button>';
+        })
         ->rawColumns(['action'])
         ->make(true);
     }
 
-    public function updateBooks(Request $request)
+    public function update(Request $request)
     {
         $me = (new CommonController)->thisuser();
 
         if($request->id && !$request->ISBN)
         {
-            Book::find($id)->delete();
+            Book::find($request->id)->delete();
+            return 1;
         }
 
         //Validator
@@ -66,8 +69,8 @@ class BookController extends Controller
             'price' => 'required',
             'description' => 'required',
             'quantity' => 'required',
-            // 'catalogId' => 'required',
-            // 'shelfId' => 'required'
+            'catalogId' => 'required',
+            'shelfId' => 'required'
         ];
 
         $message = [
