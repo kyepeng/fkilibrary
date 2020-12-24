@@ -16,7 +16,7 @@ use App\Booklog;
 class BookLogController extends Controller
 {
     public function index()
-    {
+    {	
         $me = (new CommonController)->thisuser();
 
         $list = DB::table('book_logs')
