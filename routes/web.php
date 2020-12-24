@@ -19,3 +19,16 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('main', 'HomeController@main');
+
+
+//User
+Route::get('users','UserController@index');
+Route::get('getUsers','UserController@getUsers');
+Route::post('updateUsers','UserController@updateUsers');
+Route::post('deleteUsers','UserController@deleteUsers');
+
+//Books
+Route::get('books','BookController@index');
+Route::get('getBooks','BookController@getBooks');
+Route::post('updateBooks','BookController@updateBooks');
+Route::post('deleteBooks','BookController@deleteBooks');

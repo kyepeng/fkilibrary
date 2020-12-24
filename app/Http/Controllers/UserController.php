@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use DB;
+use Datatables;
+use Illuminate\Support\Facades\Validator;
+use Mail;
 
 class UserController extends Controller
 {
@@ -11,24 +16,26 @@ class UserController extends Controller
         $me = (new CommonController)->thisuser();
 
         $list = DB::table('users')
-        ->select(DB::raw("'' as no"),DB::raw("'' as checkbox"),'id','name','email','status')
+        ->select(DB::raw('"" as no'),'id','name','email','matric','gender','year','course','phone',DB::raw('"" as action'))
         ->get();
 
-        return view('users',compact('me','list'));
+        return view('books',compact('me','list'));
     }
 
     public function getUsers()
     {
+    	$me = (new CommonController)->thisuser();
+
         $list = DB::table('users')
-        ->select(DB::raw(" '' as no"),'id','name','email')
+        ->select('id','name','email','matric','gender','year','course','phone')
         ->get();
 
         return Datatables::of($list)
         ->addIndexColumn()
-        ->addColumn('checkbox', function($list){
-            return '<input type="checkbox" class="check" value="'.$list->id.'">';
+        ->addColumn('action', function($list){
+        	return '<button class="btn btn-danger" data-id="'.$list->id.'">Delete</button>';
         })
-        ->rawColumns(['checkbox'])
+        ->rawColumns(['action'])
         ->make(true);
     }
 }

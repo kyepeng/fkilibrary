@@ -15,6 +15,12 @@ class CreateBookLogsTable extends Migration
     {
         Schema::create('book_logs', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('bookId')->index();
+            $table->integer('userId')->index();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->decimal('fine',10,2);
+            $table->decimal('paid',10,2);
             $table->timestamps();
         });
     }

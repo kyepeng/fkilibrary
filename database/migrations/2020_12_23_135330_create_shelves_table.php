@@ -15,6 +15,10 @@ class CreateShelvesTable extends Migration
     {
         Schema::create('shelves', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('shelf');
+            $table->integer('row');
+            $table->integer('column');
+            $table->string('displayName');
             $table->timestamps();
         });
     }
