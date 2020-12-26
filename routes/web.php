@@ -11,28 +11,45 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['middleware' => ['auth']], function()
+{
+	//need login
+	Route::get('/home', 'HomeController@index')->name('home');
+
+	//User
+	Route::get('users','UserController@index');
+	Route::get('getUsers','UserController@getUsers');
+	Route::post('updateUsers','UserController@updateUsers');
+	Route::post('deleteUsers','UserController@deleteUsers');
+
+	//Books
+	Route::get('books','BookController@index');
+	Route::get('getBooks','BookController@getData');
+	Route::post('updateBooks','BookController@update');
+
+	//Books
+	Route::get('bookLogs','BookLogController@index');
+	Route::get('getBookLogs','BookLogController@getData');
+	Route::post('updateBookLogs','BookLogController@update');
+
+	//Form
+	Route::get('returnbookForm','BookLogController@returnBookForm');
+	Route::get('getLogInfo','BookLogController@getLogInfo');
+	Route::get('bookForm/{id}','BookLogController@bookForm');
+	Route::post('submitBookForm','BookLogController@submitBookForm');
+
+	Route::get('successPage',function(){
+		return view('layouts.success');
+	});
+
+	Route::get('logout','Auth\LoginController@logout');
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@main');
 Route::get('main', 'HomeController@main');
 
+Route::get('searchresult','SearchController@index');
+Route::get('getSearchResult','SearchController@getData');
+//no login
+Auth::routes();
 
-//User
-Route::get('users','UserController@index');
-Route::get('getUsers','UserController@getUsers');
-Route::post('updateUsers','UserController@updateUsers');
-Route::post('deleteUsers','UserController@deleteUsers');
-
-//Books
-Route::get('books','BookController@index');
-Route::get('getBooks','BookController@getData');
-Route::post('updateBooks','BookController@update');
-
-//Books
-Route::get('bookLogs','BookLogController@index');
-Route::get('getBookLogs','BookLogController@getData');
-Route::post('updateBookLogs','BookLogController@update');

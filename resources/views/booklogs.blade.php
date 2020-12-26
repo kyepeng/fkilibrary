@@ -7,15 +7,19 @@ var oTable;
 $(document).ready(function() {
     $('#ajaxloader').hide();
     $('.alert').hide();
+
     oTable = $('#oTable').DataTable({
         dom: "Brtp",
         rowId: 'id',
-        stateSave: true,
         bAutoWidth: true,
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url" : "{{ url('getBookLogs') }}"
+            "url" : "{{ url('getBookLogs') }}",
+            "data" : {
+                id : "{{$id}}",
+                status : function() { return $('#statusfilter').val() },
+            }
         },
         columnDefs: [
         { "visible": false, "targets": [1] }, 
@@ -31,7 +35,7 @@ $(document).ready(function() {
             { data: 'end_date', title: 'End Date'},
             { data: 'fine', title: 'Fine'},
             { data: 'paid', title: 'Paid'},
-            { data: 'action', title : 'Action'}
+            { data: 'badge', title : 'Status'}
         ],
         initComplete: function () {
                 
@@ -42,12 +46,7 @@ $(document).ready(function() {
 
         },
         buttons: [
-            {
-                text: 'New',
-                action: function ( e, dt, node, config ) {
-                    openModal(this);
-                }
-            }
+
         ]
     });
 
@@ -132,6 +131,16 @@ $(document).ready(function() {
                     <div id="alert" class="alert alert-success">
                         <i class="fa fa-times" aria-hidden="true" onclick="$('#alert').hide()" style="float:right;"></i>
                         <div id="alertmessage"></div> 
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>Status</label>
+                        <select id="statusfilter" class="form-control select2" onchange="RefreshTable()">
+                            <option value="">All</option>
+                            <option value="Borrow">Issued Book</option>
+                            <option value="Returned">Returned Book</option>
+                            <option value="Expired">Non-returned Book</option>
+                        </select>
                     </div>
 
                     <table id="oTable" class="table table-striped table-bordered">
@@ -245,6 +254,11 @@ $(document).ready(function() {
 
         PostAjax(param);
 
+    }
+
+    function RefreshTable()
+    {
+        $('#oTable').DataTable().ajax.reload();   
     }
 </script>
 @endsection

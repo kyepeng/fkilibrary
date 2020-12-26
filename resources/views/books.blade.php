@@ -10,7 +10,6 @@ $(document).ready(function() {
     oTable = $('#oTable').DataTable({
         dom: "Brtp",
         rowId: 'id',
-        stateSave: true,
         bAutoWidth: true,
         "processing": true,
         "serverSide": true,
@@ -19,8 +18,8 @@ $(document).ready(function() {
         },
         columnDefs: [
         { "visible": false, "targets": [1] }, 
-        {"className": "dt-center", "targets": "_all"},
-        { "width": "2%", "targets": [0] }
+        { "width": "2%", "targets": [0] },
+        { "width": "15%", "targets": [-1] },
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
