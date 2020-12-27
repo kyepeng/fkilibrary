@@ -21,21 +21,6 @@
                 <div class="card-body">
 
                     <div class="row">
-                        <!-- Top 10 Most Popular Book -->
-                        <div class="col-md-12">
-                            <div class="chart box">
-                                <div id="popular"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <!-- Most Active Year -->
-                        <div class="col-md-6">
-                            <div class="chart box">
-                                <div id="activeyear"></div>
-                            </div>
-                        </div>
                         <!-- Fine Collected Today -->
                         <div class="col-md-6">
                             <div class="chart box">

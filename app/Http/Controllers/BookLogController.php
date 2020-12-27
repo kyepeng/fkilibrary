@@ -193,7 +193,7 @@ class BookLogController extends Controller
 
     	Mail::send('emails.bookissue', compact('detail'), function($message) use ($detail)
         { 
-                $message->to($detail->email)->subject("FKILibrary Book Issue Statement");
+                $message->to($detail->email)->subject("You’ve issued a book on ".date('Y-m-d'));
         });
 
         return view('layouts.success');

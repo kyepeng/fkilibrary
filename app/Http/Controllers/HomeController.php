@@ -45,17 +45,17 @@ class HomeController extends Controller
            array_push($populardata, $pop->count);
         }
 
-        $active = BookLog::select(DB::raw('count(*) as count'),DB::raw('YEAR(created_at) as year'))
+        $active = BookLog::select(DB::raw('count(*) as count'),'users.year')
+        ->join('users','users.id','=','book_logs.userId')
         ->where('status','Borrow')
-        ->GroupBy(DB::raw('YEAR(created_at)'))
+        ->GroupBy('users.year')
         ->get();
 
-        $activetitle = [];
-        $activedata = [];
+        $activetitle = ['Year 1','Year 2','Year 3','Year 4'];
+        $activedata = [0,0,0,0];
         foreach($active as $act)
         {
-           array_push($activetitle, $act->year);
-           array_push($activedata, $act->count);
+           $activedata[$act->year-1] = $act->count;
         }
 
         $students = User::where('type','Student')
@@ -89,8 +89,9 @@ class HomeController extends Controller
         ->first();
 
         $fine = BookLog::whereRaw('CAST(updated_at as date) = CURDATE()')
-        ->sum('paid');
+        ->sum('paid') ?: -1;
         
+        $fine = 79.80;
         $booktitle = ['Issued','Returned','Non-Return'];
         $bookdata = [];
         $bookdata[0] = $issue->count;
