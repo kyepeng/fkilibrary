@@ -45,7 +45,15 @@ Route::group(['middleware' => ['auth']], function()
 	Route::get('logout','Auth\LoginController@logout');
 });
 
-Route::get('/', 'HomeController@main');
+Route::get('/', function(){
+	$path = "main";
+	$auth = Auth::user();
+	if($auth)
+	{
+		$path = $auth->type !== "Student" ? "home" : "main";
+	}
+	return redirect($path);
+});
 Route::get('main', 'HomeController@main');
 
 Route::get('searchresult','SearchController@index');

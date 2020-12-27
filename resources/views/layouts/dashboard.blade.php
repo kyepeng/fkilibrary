@@ -34,6 +34,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
     <script src="{{asset('js/main.js')}}"></script>
+    
+    <script src="{{url('plugin/ApexChart/dist/apexcharts.min.js')}}"></script>
 
     <script src="{{asset('js/lib/data-table/datatables.min.js')}}"></script>
     <script src="{{asset('js/lib/data-table/dataTables.bootstrap.min.js')}}"></script>
@@ -70,7 +72,7 @@
             background: grey;
             color:white;
         }
-        @if( !(Auth::check() && $me->type == "Student") )
+        @if( !Auth::check() || ($me && $me->type == "Student") )
             .small-device .right-panel{
                 margin-left: 0px !important;
             }
@@ -111,14 +113,14 @@
 <body>
     <!-- Left Panel -->
 
-    @if( Auth::check() && $me->type !== "Student" )
+    @if( Auth::check() && ($me && $me->type !== "Student") )
     <aside id="left-panel" class="left-panel">
         <nav class="navbar navbar-expand-sm navbar-default">
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="{{url('home')}}"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
+                        <a href="{{url('/')}}"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
                     </li>
                     <li class="menu-title">Resource Management</li><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">

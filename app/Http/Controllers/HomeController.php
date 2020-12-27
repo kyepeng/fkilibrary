@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\BookLog;
+use App\Book;
+use App\User;
+use DB;
 
 class HomeController extends Controller
 {
@@ -23,12 +27,83 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $me = (new CommonController)->thisuser();
+
+        $popular = BookLog::select(DB::raw('count(*) as count'),'books.bookName')
+        ->join('books','books.id','=','book_logs.bookId')
+        ->where('status','Borrow')
+        ->GroupBy('bookId')
+        ->limit(10)
+        ->orderBy(DB::raw('count(*)'),"DESC")
+        ->get();
+
+        $populartitle = [];
+        $populardata = [];
+        foreach($popular as $pop)
+        {
+           array_push($populartitle, $pop->bookName);
+           array_push($populardata, $pop->count);
+        }
+
+        $active = BookLog::select(DB::raw('count(*) as count'),DB::raw('YEAR(created_at) as year'))
+        ->where('status','Borrow')
+        ->GroupBy(DB::raw('YEAR(created_at)'))
+        ->get();
+
+        $activetitle = [];
+        $activedata = [];
+        foreach($active as $act)
+        {
+           array_push($activetitle, $act->year);
+           array_push($activedata, $act->count);
+        }
+
+        $students = User::where('type','Student')
+        ->select('year',DB::raw('count(*) as count'))
+        ->GroupBy('year')
+        ->get();
+
+        $studenttitle = ["Year 1","Year 2","Year 3","Year 4"];
+        $studentdata = [0,0,0,0];
+        foreach($students as $student)
+        {
+            $studentdata[$student->year-1] = $student->count;
+        }
+
+        $issue = BookLog::select(DB::raw('count(*) as count'))
+        ->join(DB::raw('(SELECT Max(id) as maxid,bookId,userId FROM book_logs GROUP BY bookId,userId) as max'),'max.maxid','book_logs.id')
+        ->where('start_date',date('Y-m-d'))
+        ->where('status','Borrow')
+        ->first();
+
+        $return = BookLog::select(DB::raw('count(*) as count'))
+        ->join(DB::raw('(SELECT Max(id) as maxid,bookId,userId FROM book_logs GROUP BY bookId,userId) as max'),'max.maxid','book_logs.id')
+        ->where(DB::raw('CAST(created_at as date)'),date('Y-m-d'))
+        ->where('status','Returned')
+        ->first();
+
+        $nonreturn = BookLog::select(DB::raw('count(*) as count'))
+        ->join(DB::raw('(SELECT Max(id) as maxid,bookId,userId FROM book_logs GROUP BY bookId,userId) as max'),'max.maxid','book_logs.id')
+        ->whereRaw('end_date < CURDATE()')
+        ->where('status','Borrow')
+        ->first();
+
+        $fine = BookLog::whereRaw('CAST(updated_at as date) = CURDATE()')
+        ->sum('paid');
+        
+        $booktitle = ['Issued','Returned','Non-Return'];
+        $bookdata = [];
+        $bookdata[0] = $issue->count;
+        $bookdata[1] = $return->count;
+        $bookdata[2] = $nonreturn->count;
+
+        return view('home',compact('me','populartitle','populardata','activetitle','activedata','studenttitle','studentdata','booktitle','bookdata','fine'));
     }
 
     public function main()
     {
-        $me = (new CommonController)->thisuser() ?: "";
+        $me = (new CommonController)->thisuser();
+
         return view('main',compact('me'));
     }
 }
