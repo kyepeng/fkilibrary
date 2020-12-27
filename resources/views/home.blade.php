@@ -236,7 +236,7 @@ $(document).ready(function() {
       series: [{{$fine !== -1 ? $fine : 100}}],
       chart: {
       height: 350,
-      type: 'donut',
+      type: 'pie',
     },
     plotOptions: {
         pie: {
@@ -244,10 +244,12 @@ $(document).ready(function() {
             labels: {
               show: true,
               name: {
-                show: true
+                show: true,
+                color: "white"
               },
               value: {
                 show: true,
+                color: "white",
                 formatter: function(val)
                 {
                     val = {{$fine}} > 0 ? val : 0;
@@ -260,7 +262,6 @@ $(document).ready(function() {
     },
     labels: ['Fine Collected'],
     responsive: [{
-      breakpoint: 480,
       options: {
         chart: {
           width: 200
@@ -270,11 +271,14 @@ $(document).ready(function() {
         }
       }
     }],
+    stroke: {
+      width: 0
+    },
     title:{
         text: "Fine Collected Today"
     },
     dataLabels: {
-        enabled: true,
+        enabled: false,
         formatter: function (val,opts) {
           var value = {{$fine}} > 0 ? opts.w.config.series[opts.seriesIndex] : 0;
           return "RM " + value;

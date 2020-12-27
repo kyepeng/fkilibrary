@@ -91,7 +91,6 @@ class HomeController extends Controller
         $fine = BookLog::whereRaw('CAST(updated_at as date) = CURDATE()')
         ->sum('paid') ?: -1;
         
-        $fine = 79.80;
         $booktitle = ['Issued','Returned','Non-Return'];
         $bookdata = [];
         $bookdata[0] = $issue->count;
