@@ -38,6 +38,16 @@ Route::group(['middleware' => ['auth']], function()
 	Route::get('bookForm/{id}','BookLogController@bookForm');
 	Route::post('submitBookForm','BookLogController@submitBookForm');
 
+	//Catalog
+	Route::get('catalog','CatalogController@index');
+	Route::get('getCatalog','CatalogController@getData');
+	Route::post('updateCatalogs','CatalogController@update');
+
+	//Shelves
+	Route::get('shelves','ShelvesController@index');
+	Route::get('getShelves','ShelvesController@getData');
+	Route::post('updateShelves','ShelvesController@update');
+
 	Route::get('successPage',function(){
 		return view('layouts.success');
 	});

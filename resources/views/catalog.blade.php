@@ -10,27 +10,23 @@ $(document).ready(function() {
     oTable = $('#oTable').DataTable({
         dom: "Brtp",
         rowId: 'id',
+        stateSave: true,
         bAutoWidth: true,
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url" : "{{ url('getBooks') }}"
+            "url" : "{{ url('getCatalog') }}"
         },
         columnDefs: [
         { "visible": false, "targets": [1] }, 
-        { "width": "2%", "targets": [0] },
-        { "width": "15%", "targets": [-1] },
+        {"className": "dt-center", "targets": "_all"},
+        { "width": "2%", "targets": [0] }
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
             { data: 'id'},
-            { data: 'bookName', title: 'Name'},
-            { data: 'ISBN', title: 'ISBN'},
-            { data: 'description', title: 'Description'},
-            { data: 'price', title: 'Price'},
-            { data: 'quantity', title: 'Qty'},
-            { data: 'catalog', title: 'Catalog'},
-            { data: 'shelf', title: 'Shelf'},
+            { data: 'catalogName', title: 'Name'},
+            { data: 'catalogDescription', title: 'Description'},
             { data: 'action', title : 'Action'}
         ],
         initComplete: function () {
@@ -66,7 +62,7 @@ $(document).ready(function() {
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Book List</h1>
+                        <h1>Catalog List</h1>
                     </div>
                 </div>
             </div>
@@ -76,7 +72,7 @@ $(document).ready(function() {
                         <ol class="breadcrumb text-right">
                             <li><a href="#">Resource Management</a></li>
                             <li><a href="#">Book Management</a></li>
-                            <li class="active">Book List</li>
+                            <li class="active">Catalog List</li>
                             
                         </ol>
                     </div>
@@ -94,7 +90,7 @@ $(document).ready(function() {
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="actionModalTitle">Detail</h4>
+                <h4 class="modal-title" id="actionModalTitle">Catalog</h4>
               </div>
               <div class="modal-body">
 
@@ -126,7 +122,7 @@ $(document).ready(function() {
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <strong class="card-title">Book List</strong>
+                    <strong class="card-title">Catalog List</strong>
                 </div>
                 <div class="card-body">
 
@@ -197,30 +193,13 @@ $(document).ready(function() {
         var formfields = `
                 <input type="hidden" name="id" value="">
                 <label>Name</label>
-                <input type="text" name="bookName" class="form-control">
-                <label>ISBN</label>
-                <input type="text" name="ISBN" class="form-control">
+                <input type="text" name="catalogName" class="form-control">
                 <label>Description</label>
-                <input type="text" name="description" class="form-control">
-                <label>Price</label>
-                <input type="number" name="price" class="form-control">
-                <label>Quantity</label>
-                <input type="number" name="quantity" class="form-control">
-                <label>Catalog</label>
-                <select name="catalogId" class="form-control select2">
-                    <option value="">Please Select</option>
-                    @foreach($catalog as $cat)
-                    <option value="{{$cat->id}}">{{$cat->catalogName}}</option>
-                    @endforeach
-                </select>
-                <label>Shelf</label>
-                <select name="shelfId" class="form-control select2">
-                    <option value="">Please Select</option>
-                    @foreach($shelf as $she)
-                    <option value="{{$she->id}}">{{$she->displayName}}</option>
-                    @endforeach
-                </select>
+                <input type="text" name="catalogDescription" class="form-control">
+               
         `;
+        // <label>Picture</label>
+        //         <input type="file" name="catalogpicture" class="form-control" accept="image/x-png,image/gif,image/jpeg">
 
         if(type != "New" && !id)
         {
@@ -249,7 +228,7 @@ $(document).ready(function() {
     {   
         var param = {
             'data' : new FormData($("#upload_form")[0]),
-            'myurl' : "{{ url('/updateBooks') }}",
+            'myurl' : "{{ url('/updateCatalogs') }}",
             'form' : 1,
             'button' : "submitBtn",
             'modal' : "ActionModal",
