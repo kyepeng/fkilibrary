@@ -22,18 +22,20 @@
     <link rel="stylesheet" href="{{asset('css/cs-skin-elastic.css')}}">
     <link rel="stylesheet" href="{{asset('css/lib/datatable/dataTables.bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
-
+    <link rel="stylesheet" href="{{ asset('/plugin/select2/select2.min.css') }}">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
     <script src="{{asset('js/main.js')}}"></script>
-
+    
+    <script src="{{url('plugin/ApexChart/dist/apexcharts.min.js')}}"></script>
 
     <script src="{{asset('js/lib/data-table/datatables.min.js')}}"></script>
     <script src="{{asset('js/lib/data-table/dataTables.bootstrap.min.js')}}"></script>
@@ -70,7 +72,40 @@
             background: grey;
             color:white;
         }
+        @if( !Auth::check() || ($me && $me->type == "Student") )
+            .small-device .right-panel{
+                margin-left: 0px !important;
+            }
+            .right-panel {
+                margin-left: 0px !important;
+            }
+        @endif
 
+        .carousel-item {
+          /*width: 100px;*/
+          margin-top: 30px;
+          height: 40vh;
+          min-height: 350px;
+          background: no-repeat center center scroll;
+          -webkit-background-size: cover;
+          -moz-background-size: cover;
+          -o-background-size: cover;
+          background-size: cover;
+          background: black;
+        }
+        .carouselContent{
+          width: 100%;
+          position: absolute;
+          display: block;
+          bottom: 10vh;
+          text-align: center;
+          /*left: 15%;*/
+        }
+        .carouselImage{
+          margin-left: 10%;
+          width: 150px;
+          height: 200px;
+        }
 
     </style>
 
@@ -78,13 +113,14 @@
 <body>
     <!-- Left Panel -->
 
+    @if( Auth::check() && ($me && $me->type !== "Student") )
     <aside id="left-panel" class="left-panel">
         <nav class="navbar navbar-expand-sm navbar-default">
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="{{url('home')}}"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
+                        <a href="{{url('/')}}"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
                     </li>
                     <li class="menu-title">Resource Management</li><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
@@ -95,7 +131,8 @@
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-address-book"></i>Book Management</a>
-                        <ul class="sub-menu children dropdown-menu">                            
+                        <ul class="sub-menu children dropdown-menu">                      
+                            <li><i class="fa fa-book"></i><a href="{{url('returnbookForm')}}">Return Book Form</a></li>      
                             <li><i class="fa fa-book"></i><a href="{{url('books')}}">Book</a></li>
                             <li><i class="fa fa-list"></i><a href="{{url('shelves')}}">Shelves</a></li>
                             <li><i class="fa fa-history"></i><a href="{{url('bookLogs')}}">Book Log</a></li>
@@ -112,6 +149,7 @@
             </div><!-- /.navbar-collapse -->
         </nav>
     </aside><!-- /#left-panel -->
+    @endif
 
     <!-- Left Panel -->
 
@@ -130,24 +168,34 @@
             </div>
             <div class="top-right">
                 <div class="header-menu">
+                    <!-- Top Menu -->
+                    <div class="topmenu">
+
+                    </div>
+
                     <div class="header-left">
-                        <button class="search-trigger"><i class="fa fa-search"></i></button>
-                        <div class="form-inline">
-                            <form class="search-form">
-                                <input class="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search">
-                                <button class="search-close" type="submit"><i class="fa fa-close"></i></button>
-                            </form>
+                        <div class="row" style="padding-top: 10px;">
+                                <div class="col-md-10">
+                                    <input type="text" name="usersearch" class="form-control" placeholder="Search Book">
+                                </div>
+                                <div class="col-md-2" style="padding-top: 5px;">
+                                    <i class="fa fa-search" onclick="Search()"></i>
+                                </div>
                         </div>
                     </div>
 
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="{{asset('/images/logo.png')}}" alt="User Avatar">
+                            <img class="user-avatar rounded-circle" src="{{asset('/images/user.png')}}" alt="User Avatar">
                         </a>
 
                         <div class="user-menu dropdown-menu">
+                            @if(Auth::check())
                             <a class="nav-link" href="#"><i class="fa fa-user"></i>My Profile</a>
-                            <a class="nav-link" href="#"><i class="fa fa-power-off"></i>Logout</a>
+                            <a class="nav-link" href="{{url('logout')}}"><i class="fa fa-power-off"></i>Logout</a>
+                            @else
+                            <a class="nav-link" href="{{url('login')}}"><i class="fa fa-power-off"></i>Login</a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -164,7 +212,7 @@
             <div class="footer-inner bg-white">
                 <div class="row">
                     <div class="col-sm-12">
-                        Copyright &copy; {{date('Y')}} Evolucent
+                        Copyright &copy; {{date('Y')}} FKI
                     </div>
                 </div>
             </div>
@@ -224,13 +272,16 @@
                 $('#'+param.loader).hide();
             },
             error : function(data){
-                  // $('#'+param.modal).modal('hide');
-                  var errors = data.responseJSON;
-                  var message = "";
-                  for (var error in errors)
-                  {
-                      message = message + errors[error] + "<br>"
-                  }
+                if(param.hide)
+                {
+                    $('#'+param.modal).modal('hide');
+                }
+                var errors = data.responseJSON;
+                var message = "";
+                for (var error in errors)
+                {
+                    message = message + errors[error] + "<br>"
+                }
                 showMessage("warning",message,param.modal);
                 $('#'+param.button).prop('disabled',false);
                 $('#'+param.loader).hide();
@@ -252,6 +303,12 @@
         // $('#alert').hide();
         // $('#warning').hide();
         $('.alert').hide();
+    }
+
+    function Search()
+    {
+        var search = $('input[name="usersearch"]').val();
+        window.location.href = "{{url('searchresult')}}?usersearch=" + search;
     }
     
     </script>

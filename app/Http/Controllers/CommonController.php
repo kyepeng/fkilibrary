@@ -12,7 +12,7 @@ class CommonController extends Controller
     public function thisuser()
     {
         $auth = Auth::user();
-        $me = User::find($auth->id)->first();
+        $me = User::find($auth ? $auth->id : 0);
         
         return $me;
     }
