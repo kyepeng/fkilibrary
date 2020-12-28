@@ -99,6 +99,7 @@
                             <li><i class="fa fa-book"></i><a href="{{url('books')}}">Book</a></li>
                             <li><i class="fa fa-list"></i><a href="{{url('shelves')}}">Shelves</a></li>
                             <li><i class="fa fa-history"></i><a href="{{url('bookLogs')}}">Book Log</a></li>
+                            <li><i class="fa fa-file-text-o"></i><a href="{{url('catalog')}}">Catalog</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">

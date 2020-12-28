@@ -19,7 +19,7 @@ class UserController extends Controller
         ->select(DB::raw('"" as no'),'id','name','email','matric','gender','year','course','phone',DB::raw('"" as action'))
         ->get();
 
-        return view('books',compact('me','list'));
+        return view('users',compact('me','list'));
     }
 
     public function getUsers()
