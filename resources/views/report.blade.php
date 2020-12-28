@@ -32,16 +32,14 @@
 
                     <div class="row">
                         <!-- Fine Collected Today -->
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="chart box">
                                 <div id="fine"></div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <!-- Total Book Today -->
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="chart box">
                                 <div id="booklog"></div>
                             </div>
@@ -133,7 +131,7 @@ $(document).ready(function() {
     title:{
         text: "Book Log"
     },
-    colors: ['#022CD6','#56399F','#071D77']
+    colors: ['#022CD6','#DA2C06','#DA2C06']
     };
 
     var chart = new ApexCharts(document.querySelector("#booklog"), options);
