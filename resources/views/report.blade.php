@@ -16,13 +16,23 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <strong class="card-title">Dashboard</strong>
+                    <strong class="card-title">Report</strong>
                 </div>
                 <div class="card-body">
 
+                    <div class="col-md-5">
+                      <div class="form-group">
+                          <label class=" form-control-label">Date Range</label>
+                          <div class="input-group">
+                              <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                              <input class="form-control" id="range">
+                          </div>
+                      </div>
+                    </div>
+
                     <div class="row">
                         <!-- Fine Collected Today -->
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="chart box">
                                 <div id="fine"></div>
                             </div>
@@ -30,15 +40,8 @@
                     </div>
 
                     <div class="row">
-                        <!-- Total Student -->
-                        <div class="col-md-6">
-                            <div class="chart box">
-                                <div id="student"></div>
-                            </div>
-                        </div>
-
                         <!-- Total Book Today -->
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="chart box">
                                 <div id="booklog"></div>
                             </div>
@@ -52,15 +55,33 @@
 
     </div><!-- .animated -->
 </div><!-- .content -->
-
+<link href="{{ asset('/plugin/daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="{{ asset('/plugin/daterangepicker/daterangepicker.js') }}"></script>
 <script type="text/javascript">
+
+  $('#range').daterangepicker(
+      {
+        locale: {
+          format: 'YYYY-MM-DD'
+      },
+      startDate: '{{$start}}',
+      endDate: '{{$end}}'
+  });
+
+  $('#range').on('apply.daterangepicker', function(ev, picker) {
+      var range = $('#range').val().split(" - ");
+      window.location.href = "{{url('report')}}/" + range[0] + "/" + range[1]; 
+  });
+
 $(document).ready(function() {
-    
+
+
     // Book Log
     var options = {
       series: {!! json_encode($bookdata) !!},
       chart: {
-      type: 'donut',
+      type: 'pie',
       height: 350
     },
     plotOptions: {
@@ -69,16 +90,32 @@ $(document).ready(function() {
             labels: {
               show: true,
               name: {
-                show: true
+                show: true,
+                color: "white"
               },
               value: {
-                show: true
+                show: true,
+                formatter: function(val)
+                {
+                    return {{count($bookdata)}} > 1 ? val : '-';
+                },
+                color: "white"
               }
             }
           }
         }
     },
-    labels: {!! json_encode($booktitle) !!},
+    tooltip: {
+      y: {
+        formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+           return {{count($bookdata)}} > 0 ? value : '-';
+        }
+      }
+    },
+    stroke: {
+      width: 0
+    },
+    labels: {{ count($bookdata) }} > 1 ? {!! json_encode($booktitle) !!} : ['No History'],
     responsive: [{
       breakpoint: 480,
       options: {
@@ -90,10 +127,13 @@ $(document).ready(function() {
         }
       }
     }],
-    title:{
-        text: "Book Log Today"
+    dataLabels: {
+        enabled: {{count($bookdata)}} > 1 ? true : false
     },
-    colors: ['#00fa21','#008211','#bff266']
+    title:{
+        text: "Book Log"
+    },
+    colors: ['#022CD6','#56399F','#071D77']
     };
 
     var chart = new ApexCharts(document.querySelector("#booklog"), options);
@@ -104,7 +144,7 @@ $(document).ready(function() {
       series: [{{$fine !== -1 ? $fine : 100}}],
       chart: {
       height: 350,
-      type: 'donut',
+      type: 'pie',
     },
     plotOptions: {
         pie: {
@@ -112,10 +152,12 @@ $(document).ready(function() {
             labels: {
               show: true,
               name: {
-                show: true
+                show: true,
+                color: "white"
               },
               value: {
                 show: true,
+                color: "white",
                 formatter: function(val)
                 {
                     val = {{$fine}} > 0 ? val : 0;
@@ -126,9 +168,15 @@ $(document).ready(function() {
           }
         }
     },
+    tooltip: {
+      y: {
+        formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+          return {{$fine}} > 0 ? "RM "+ value : 0;
+        }
+      }
+    },
     labels: ['Fine Collected'],
     responsive: [{
-      breakpoint: 480,
       options: {
         chart: {
           width: 200
@@ -138,27 +186,14 @@ $(document).ready(function() {
         }
       }
     }],
+    stroke: {
+      width: 0
+    },
     title:{
-        text: "Fine Collected Today"
+        text: "Fine Collected"
     },
     dataLabels: {
-        enabled: true,
-        formatter: function (val,opts) {
-          var value = {{$fine}} > 0 ? opts.w.config.series[opts.seriesIndex] : 0;
-          return "RM " + value;
-        }
-      },
-    noData: {
-      text: undefined,
-      align: 'center',
-      verticalAlign: 'middle',
-      offsetX: 0,
-      offsetY: 0,
-      style: {
-        color: undefined,
-        fontSize: '14px',
-        fontFamily: undefined
-      }
+        enabled: false
     },
     colors:['#f24b72']
     };

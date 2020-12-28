@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth']], function()
 	Route::get('getBooks','BookController@getData');
 	Route::post('updateBooks','BookController@update');
 
-	//Books
+	//Book Log
 	Route::get('bookLogs','BookLogController@index');
 	Route::get('getBookLogs','BookLogController@getData');
 	Route::post('updateBookLogs','BookLogController@update');
@@ -47,6 +47,9 @@ Route::group(['middleware' => ['auth']], function()
 	Route::get('shelves','ShelvesController@index');
 	Route::get('getShelves','ShelvesController@getData');
 	Route::post('updateShelves','ShelvesController@update');
+
+	//Report
+	Route::get('report/{start?}/{end?}','ReportController@index');
 
 	Route::get('successPage',function(){
 		return view('layouts.success');
