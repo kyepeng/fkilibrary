@@ -108,7 +108,7 @@ $(document).ready(function() {
     tooltip: {
       y: {
         formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
-           return {{count($bookdata)}} > 0 ? value : '-';
+           return {{count($bookdata)}} > 1 ? value : '-';
         }
       }
     },
