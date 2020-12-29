@@ -22,6 +22,7 @@ class CreateBooksTable extends Migration
             $table->integer('quantity');
             $table->integer('shelfId')->index();
             $table->integer('catalogId')->index();
+            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }

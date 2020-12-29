@@ -31,6 +31,7 @@ $(document).ready(function() {
             { data: 'quantity', title: 'Qty'},
             { data: 'catalog', title: 'Catalog'},
             { data: 'shelf', title: 'Shelf'},
+            { data: 'image', title: 'Image'},
             { data: 'action', title : 'Action'}
         ],
         initComplete: function () {
@@ -221,7 +222,7 @@ $(document).ready(function() {
                     @endforeach
                 </select>
                 <label>Photo</label>
-                <input name="photo" type="file" class="form-control">
+                <input name="photo" type="file" class="form-control" accept="image/x-png,image/gif,image/jpeg"/>
         `;
 
         if(type != "New" && !id)

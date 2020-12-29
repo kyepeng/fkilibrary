@@ -17,7 +17,7 @@ class BookController extends Controller
         $me = (new CommonController)->thisuser();
 
         $list = DB::table('books')
-        ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','price','quantity',DB::raw('"" as catalog'),DB::raw('"" as shelf'),DB::raw('"" as action'))
+        ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','price','quantity','image_path',DB::raw('"" as catalog'),DB::raw('"" as shelf'),DB::raw('"" as action'))
         ->get();
 
         $catalog = Catalog::all();
@@ -32,23 +32,26 @@ class BookController extends Controller
     	$me = (new CommonController)->thisuser();
 
         $list = DB::table('books')
-        ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','price','quantity','shelfId','catalogId',DB::raw('"" as action'))
+        ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','price','quantity','image_path','shelfId','catalogId',DB::raw('"" as action'))
         ->get();
 
         return Datatables::of($list)
         ->addIndexColumn()
         ->addColumn('shelf', function($list){
             $shelf = Shelf::find($list->shelfId);
-            return $shelf->displayName;
+            return $shelf ? $shelf->displayName : '-';
         })
         ->addColumn('catalog', function($list){
             $catalog = Catalog::find($list->catalogId);
-            return $catalog->catalogName;
+            return $catalog ? $catalog->catalogName : '-';
+        })
+        ->addColumn('image', function($list){
+            return '<img src="'.asset('storage/public/book/'.$list->image_path).'" width="50" height="50">';
         })
         ->addColumn('action', function($list){
             return '<button class="btn btn-primary" onclick="openModal(this)" data-type="Edit" data-id="'.$list->id.'">Edit</button> <button class="btn btn-danger" onclick="openModal(this)" data-type="Delete" data-id="'.$list->id.'">Delete</button>';
         })
-        ->rawColumns(['action'])
+        ->rawColumns(['action','image'])
         ->make(true);
     }
 
