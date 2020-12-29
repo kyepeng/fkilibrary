@@ -216,14 +216,17 @@
                         <a href="{{url('main')}}">Home</a>
                         <a href="{{url('')}}">About</a>
                         <div class="dropdown">
-                            <a href="{{url('catalog')}}">Catalog</a>
+                            <a href="#">Catalog</a>
                             <div class="dropdown-content">
-                                <a href="#">Link 1</a>
-                                <a href="#">Link 2</a>
-                                <a href="#">Link 3</a>
+                                @foreach($allcatalog as $allcat)
+                                <a href="{{url('searchresult')}}?catalog={{$allcat->id}}">{{$allcat->catalogName}}</a>
+                                @endforeach
                             </div>
                         </div>
+                        @if( Auth::check())
                         <a href="{{url('report')}}">Report</a>
+                        <a href="{{url('reservelist')}}">Reserve List</a>
+                        @endif
                     </div>
 
                     <div class="header-left">

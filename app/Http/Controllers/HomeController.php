@@ -98,16 +98,19 @@ class HomeController extends Controller
         $bookdata[1] = $return->count;
         $bookdata[2] = $nonreturn->count;
 
-        return view('home',compact('me','populartitle','populardata','activetitle','activedata','studenttitle','studentdata','booktitle','bookdata','fine'));
+        $allcatalog = Catalog::all();
+
+        return view('home',compact('me','populartitle','populardata','activetitle','activedata','studenttitle','studentdata','booktitle','bookdata','fine','allcatalog'));
     }
 
     public function main()
     {
         $me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();
 
         $catalog = Catalog::all()->chunk(4);
         $book = Book::all()->chunk(4);
 
-        return view('main',compact('me','catalog','book'));
+        return view('main',compact('me','catalog','book','allcatalog'));
     }
 }

@@ -8,18 +8,20 @@ use DB;
 use Datatables;
 use Illuminate\Support\Facades\Validator;
 use Mail;
+use App\Catalog;
 
 class UserController extends Controller
 {
     public function index()
     {
         $me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();
 
         $list = DB::table('users')
         ->select(DB::raw('"" as no'),'id','name','email','matric','gender','year','course','phone',DB::raw('"" as action'))
         ->get();
 
-        return view('users',compact('me','list'));
+        return view('users',compact('me','list','allcatalog'));
     }
 
     public function getUsers()

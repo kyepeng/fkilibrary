@@ -8,6 +8,7 @@ use App\Book;
 use App\User;
 use DB;
 use Datatables;
+use App\Catalog;
 
 class ReportController extends Controller
 {
@@ -62,13 +63,15 @@ class ReportController extends Controller
         	$bookdata = [100];
         }
 
-        return view('report',compact('me','booktitle','bookdata','fine','start','end'));
+        $allcatalog = Catalog::all();
+
+        return view('report',compact('me','booktitle','bookdata','fine','start','end','allcatalog'));
 	}
 
 	public function finereport($start = null, $end = null)
 	{
 		$me = (new CommonController)->thisuser();
-
+        $allcatalog = Catalog::all();
      	if(!$start)
      	{
      		$start = date('Y-m-d',strtotime('today'));
@@ -83,7 +86,7 @@ class ReportController extends Controller
      	->select('id','userId','bookId','start_date','end_date','fine','paid')
      	->get();
 
-		return view('finereport',compact('me','start','end','list'));
+		return view('finereport',compact('me','start','end','list','allcatalog'));
 	}
 
 	public function getFineData(Request $request)
@@ -116,7 +119,7 @@ class ReportController extends Controller
 	public function logreport($start = null, $end = null)
 	{
 		$me = (new CommonController)->thisuser();
-
+        $allcatalog = Catalog::all();
      	if(!$start)
      	{
      		$start = date('Y-m-d',strtotime('today'));
@@ -131,7 +134,7 @@ class ReportController extends Controller
      	->select('id','userId','bookId','start_date','end_date','status')
      	->get();
 
-		return view('logreport',compact('me','start','end','list'));
+		return view('logreport',compact('me','start','end','list','allcatalog'));
 	}
 
 	public function getLogData(Request $request)

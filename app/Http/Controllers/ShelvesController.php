@@ -20,11 +20,11 @@ class ShelvesController extends Controller
         ->select(DB::raw('"" as no'),'id','shelf','row','column','displayName',DB::raw('"" as action'))
         ->get();
 
-        $catalog = Catalog::all();
+        $allcatalog = Catalog::all();
 
         $shelf = Shelf::all();
 
-        return view('shelves',compact('me','list','shelf','catalog'));
+        return view('shelves',compact('me','list','shelf','allcatalog'));
     }
 
     public function getData()

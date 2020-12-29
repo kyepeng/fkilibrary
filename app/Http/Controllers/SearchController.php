@@ -15,6 +15,7 @@ class SearchController extends Controller
     public function index(Request $request)
     {
         $me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();
         $book = $request->book ? : 0;
         $usersearch = $request->usersearch ?: "";
         $catalog = $request->catalog ?: "";
@@ -23,7 +24,7 @@ class SearchController extends Controller
         ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','quantity',DB::raw('"" as catalog'),DB::raw('"" as shelf'),DB::raw('"" as action'))
         ->get();
 
-        return view('searchresult',compact('list','usersearch','book','catalog','me'));
+        return view('searchresult',compact('list','usersearch','book','catalog','me','allcatalog'));
     }
 
     public function getData(Request $request)

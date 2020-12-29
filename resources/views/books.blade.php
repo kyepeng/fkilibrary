@@ -210,7 +210,7 @@ $(document).ready(function() {
                 <label>Catalog</label>
                 <select name="catalogId" class="form-control select2">
                     <option value="">Please Select</option>
-                    @foreach($catalog as $cat)
+                    @foreach($allcatalog as $cat)
                     <option value="{{$cat->id}}">{{$cat->catalogName}}</option>
                     @endforeach
                 </select>

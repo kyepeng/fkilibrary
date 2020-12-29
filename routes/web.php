@@ -60,7 +60,9 @@ Route::group(['middleware' => ['auth']], function()
 	Route::post('updateprofile','ProfileController@update');
 
 	//Reserve 
-	
+	Route::get('reservelist','BookController@reservelist');
+	Route::get('getReserveData','BookController@getReserveData');
+
 	Route::get('successPage',function(){
 		return view('layouts.success');
 	});

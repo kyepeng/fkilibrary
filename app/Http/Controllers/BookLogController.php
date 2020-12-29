@@ -19,6 +19,7 @@ class BookLogController extends Controller
     public function index(Request $request)
     {	
         $me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();
 
         $id = $request->id ?: 0;
 
@@ -30,7 +31,7 @@ class BookLogController extends Controller
 
         $books = Book::all();
 
-        return view('booklogs',compact('me','list','users','books','id'));
+        return view('booklogs',compact('me','list','users','books','id','allcatalog'));
     }
 
     public function getData(Request $request)
@@ -97,12 +98,13 @@ class BookLogController extends Controller
     public function returnBookForm()
     {
         $me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();
 
     	$books = Book::all();
 
     	$users = User::where('type','Student')->get();
 
-    	return view('returnbookform',compact('me','books','users'));
+    	return view('returnbookform',compact('me','books','users','allcatalog'));
     }
 
     public function getLogInfo(request $request)
@@ -184,9 +186,11 @@ class BookLogController extends Controller
     public function bookForm($id,$type)
     {
     	$me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();
+
     	$book = Book::find($id);
 
-    	return view('bookForm',compact('me','id','book','type'));
+    	return view('bookForm',compact('me','id','book','type','allcatalog'));
     }
 
     public function submitBookForm(Request $request)
@@ -195,7 +199,12 @@ class BookLogController extends Controller
 
         if($request->status == "Borrow")
         {
-    	   $created = BookLog::create($request->except('_token'));
+            if($request->id)
+            {
+                Reserve::find($request->id)->update(['checked'=>1]);
+            }
+
+    	   $created = BookLog::create($request->except('_token','id'));
     	   $this->sendEmail($created,'Issue');
            return view('layouts.success');
         }

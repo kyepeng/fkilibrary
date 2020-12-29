@@ -20,11 +20,11 @@ class CatalogController extends Controller
         ->select(DB::raw('"" as no'),'id','catalogName','image_path','catalogDescription',DB::raw('"" as action'))
         ->get();
 
-        $catalog = Catalog::all();
+        $allcatalog = Catalog::all();
 
         $shelf = Shelf::all();
 
-        return view('catalog',compact('me','list','shelf','catalog'));
+        return view('catalog',compact('me','list','shelf','allcatalog'));
     }
 
     public function getData()
