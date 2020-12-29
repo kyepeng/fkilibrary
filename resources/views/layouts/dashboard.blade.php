@@ -214,7 +214,7 @@
                     
              
                         <a href="{{url('main')}}">Home</a>
-                        <a href="{{url('')}}">About</a>
+                        <a href="{{url('about')}}">About</a>
                         <div class="dropdown">
                             <a href="#">Catalog</a>
                             <div class="dropdown-content">
@@ -223,7 +223,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        @if( Auth::check())
+                        @if( Auth::check() )
                         <a href="{{url('report')}}">Report</a>
                         <a href="{{url('reservelist')}}">Reserve List</a>
                         @endif

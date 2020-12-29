@@ -113,4 +113,11 @@ class HomeController extends Controller
 
         return view('main',compact('me','catalog','book','allcatalog'));
     }
+
+    public function about()
+    {
+        $me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();   
+        return view('about',compact('me','allcatalog'));
+    }
 }
