@@ -38,11 +38,13 @@ class ProfileController extends Controller
         
         //Validator
         $rules = [
-            'phone' => 'regex:/^(01)[0-46-9]*[0-9]{7,8}$/|max:11|min:10',
-         
+            'course' => 'required',
+            'phone' => 'required|regex:/^(01)[0-46-9]*[0-9]{7,8}$/|max:11|min:10',
         ];
 
         $message = [
+            'course.required' => "Course field is required",
+            'phone. required' => "Phone field is required",
             'phone.regex'=> "Invalid phone number ex:0123456789",
             'phone.max'=>"The phone number may not be greater than 11 characters."
         ];
