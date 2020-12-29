@@ -32,7 +32,7 @@ class SearchController extends Controller
 
     	if($request->book)
     	{
-    		$cond .= " AND id =".$book;
+    		$cond .= " AND id =".$request->book;
     	}
 
     	if($request->usersearch)
@@ -42,7 +42,7 @@ class SearchController extends Controller
 
     	if($request->catalog)
     	{
-    		$cond .= " AND catalogId =".$catalog;
+    		$cond .= " AND catalogId =".$request->catalog;
     	}
   
         $list = DB::table('books')

@@ -13,38 +13,21 @@ $(document).ready(function() {
 
     <div id="catalog" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-      <li data-target="#catalog" data-slide-to="0" class="active"></li>
-      <li data-target="#catalog" data-slide-to="1"></li>
-      <li data-target="#catalog" data-slide-to="2"></li>
+      @foreach($catalog as $catkey => $catvalue)
+      <li data-target="#catalog" data-slide-to="{{$catkey}}" <?php if($catkey == 0) echo 'class="active"'; ?> ></li>
+      @endforeach
     </ol>
     <div class="carousel-inner" role="listbox">
 
-      <div class="carousel-item active">
-        <div class="carouselContent">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
+      @foreach($catalog as $catkey => $catvalue)
+        <div class="carousel-item {{$catkey == 0 ? 'active' : ''}}">
+          <div class="carouselContent">
+            @foreach($catvalue as $icatvalue)
+            <a href="{{url('searchresult')}}?catalog={{$icatvalue->id}}"><img src="{{asset('storage/public/catalog')}}/{{$icatvalue->image_path}}"  width="100" height="100" class="carouselImage"></a>
+            @endforeach
+          </div>
         </div>
-      </div>
-      <!-- Slide Two - Set the background image for this slide in the line below -->
-      <div class="carousel-item">
-        <div class="carouselContent">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-        </div>
-      </div>
-      <!-- Slide Three - Set the background image for this slide in the line below -->
-      <div class="carousel-item">
-        <div class="carouselContent">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-        </div>
-      </div>
+      @endforeach
 
     </div>
     <a class="carousel-control-prev" href="#catalog" role="button" data-slide="prev">
@@ -59,38 +42,21 @@ $(document).ready(function() {
 
    <div id="books" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-      <li data-target="#books" data-slide-to="0" class="active"></li>
-      <li data-target="#books" data-slide-to="1"></li>
-      <li data-target="#books" data-slide-to="2"></li>
+      @foreach($book as $bookkey => $bookvalue)
+      <li data-target="#books" data-slide-to="{{$bookkey}}" <?php if($bookkey == 0) echo 'class="active"'; ?> ></li>
+      @endforeach
     </ol>
     <div class="carousel-inner" role="listbox">
 
-      <div class="carousel-item active">
-        <div class="carouselContent">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
+      @foreach($book as $bookkey => $bookvalue)
+        <div class="carousel-item {{$bookkey == 0 ? 'active' : ''}}">
+          <div class="carouselContent">
+            @foreach($bookvalue as $ibookvalue)
+            <a href="{{url('searchresult')}}?book={{$ibookvalue->id}}"><img src="{{asset('storage/public/book')}}/{{$ibookvalue->image_path}}"  width="100" height="100" class="carouselImage"></a>
+            @endforeach
+          </div>
         </div>
-      </div>
-      <!-- Slide Two - Set the background image for this slide in the line below -->
-      <div class="carousel-item">
-        <div class="carouselContent">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-        </div>
-      </div>
-      <!-- Slide Three - Set the background image for this slide in the line below -->
-      <div class="carousel-item">
-        <div class="carouselContent">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-          <img src="{{asset('img')}}" width="100" height="100" class="carouselImage">
-        </div>
-      </div>
+      @endforeach
 
     </div>
     <a class="carousel-control-prev" href="#books" role="button" data-slide="prev">
