@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\BookLog;
+use DB;
 
 class updatePenalty extends Command
 {
@@ -12,7 +13,7 @@ class updatePenalty extends Command
      *
      * @var string
      */
-    protected $signature = 'updatePenalty';
+    protected $signature = 'update:penalty';
 
     /**
      * The console command description.
@@ -40,7 +41,7 @@ class updatePenalty extends Command
     {  
         //check overdue
         $expired = Booklog::select(DB::raw('DATEDIFF(CURDATE(),end_date) as expired_day'),'id','fine')
-        ->where('end_date','<',date('Y-m-d'))
+        ->whereRaw('end_date < CURDATE() AND status = "Borrow"')
         ->get();
 
         foreach($expired as $exp)

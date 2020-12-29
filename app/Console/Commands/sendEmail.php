@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Mail;
 use App\BookLog;
+use DB;
 
 class sendEmail extends Command
 {
@@ -13,7 +14,7 @@ class sendEmail extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'send:email';
 
     /**
      * The console command description.
@@ -40,6 +41,7 @@ class sendEmail extends Command
     public function handle()
     {
         $expiring = Booklog::where(DB::Raw('DATEDIFF(end_date,CURDATE())'),'<',3)
+         ->where('status','Borrow')
          ->select('users.email','books.bookName','book_logs.end_date','users.name')
          ->leftjoin('books','books.id','=','book_logs.bookId')
          ->leftjoin('users','users.id','=','book_logs.userId')

@@ -14,7 +14,7 @@
                       <tr align="center">
                           <td>
                             <a href="" style="display:block; width:587px; height:122px; margin:0 auto 30px;">
-                                <img src="{{asset('/images/logo.png')}}" width="400" height="200" alt="YH IT Solution Sdn. Bhd." style="display:block; border:0; margin:0;">
+                                <img src="{{asset('/images/logo.png')}}" width="400" height="200" alt="FKI Library" style="display:block; border:0; margin:0;">
                             </a>
                               <br><br><br>
                                 <p style="margin:0 0 36px; text-align:center; font-size:16px; line-height:22px; text-transform:uppercase; color:#626658;">

@@ -46,7 +46,14 @@ class BookController extends Controller
             return $catalog ? $catalog->catalogName : '-';
         })
         ->addColumn('image', function($list){
-            return '<img src="'.asset('storage/public/book/'.$list->image_path).'" width="50" height="50">';
+            if($list->image_path)
+            {
+                return '<img src="'.asset('storage/public/book/'.$list->image_path).'" width="50" height="50">';
+            }
+            else
+            {
+                return "-";
+            }
         })
         ->addColumn('action', function($list){
             return '<button class="btn btn-primary" onclick="openModal(this)" data-type="Edit" data-id="'.$list->id.'">Edit</button> <button class="btn btn-danger" onclick="openModal(this)" data-type="Delete" data-id="'.$list->id.'">Delete</button>';

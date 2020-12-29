@@ -25,10 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('updatePenalty')
+        $schedule->command('update:penalty')
                  ->daily();
 
-        $schedule->command('sendEmail')
+        $schedule->command('send:email')
                  ->daily();
     }
 

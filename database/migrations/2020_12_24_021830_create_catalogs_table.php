@@ -17,6 +17,7 @@ class CreateCatalogsTable extends Migration
             $table->increments('id');
             $table->string('catalogName');
             $table->string('catalogDescription')->nullable();
+            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }

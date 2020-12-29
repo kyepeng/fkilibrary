@@ -17,7 +17,7 @@ class CatalogController extends Controller
         $me = (new CommonController)->thisuser();
 
         $list = DB::table('catalogs')
-        ->select(DB::raw('"" as no'),'id','catalogName','catalogDescription',DB::raw('"" as action'))
+        ->select(DB::raw('"" as no'),'id','catalogName','image_path','catalogDescription',DB::raw('"" as action'))
         ->get();
 
         $catalog = Catalog::all();
@@ -32,15 +32,25 @@ class CatalogController extends Controller
     	$me = (new CommonController)->thisuser();
 
         $list = DB::table('catalogs')
-        ->select(DB::raw('"" as no'),'id','catalogName','catalogDescription',DB::raw('"" as action'))
+        ->select(DB::raw('"" as no'),'id','catalogName','image_path','catalogDescription',DB::raw('"" as action'))
         ->get();
 
         return Datatables::of($list)
         ->addIndexColumn()
+        ->addColumn('image', function($list){
+            if($list->image_path)
+            {
+                return '<img src="'.asset('storage/public/catalog/'.$list->image_path).'" width="50" height="50">';
+            }
+            else
+            {
+                return "-";
+            }
+        })
         ->addColumn('action', function($list){
             return '<button class="btn btn-primary" onclick="openModal(this)" data-type="Edit" data-id="'.$list->id.'">Edit</button> <button class="btn btn-danger" onclick="openModal(this)" data-type="Delete" data-id="'.$list->id.'">Delete</button>';
         })
-        ->rawColumns(['action'])
+        ->rawColumns(['action','image'])
         ->make(true);
     }
 
@@ -78,12 +88,23 @@ class CatalogController extends Controller
        
         if($request->id)
         {
-            Catalog::find($request->id)->update($request->except('id','_token'));
+            $item = Catalog::find($request->id);
+            $item->update($request->except('id','_token'));
         }
         else
         {
-            Catalog::create($request->except('id','_token'));
+            $item = Catalog::create($request->except('id','_token'));
         }
         
+        if($request->hasFile('photo'))
+        {
+            $filenameWithExt = $request->file('photo')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('photo')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            $path = $request->file('photo')->storeAs('public/catalog',$fileNameToStore);
+            $item->image_path = $fileNameToStore;
+            $item->save(); 
+        }
     }
 }

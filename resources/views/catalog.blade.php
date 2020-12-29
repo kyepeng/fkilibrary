@@ -27,6 +27,7 @@ $(document).ready(function() {
             { data: 'id'},
             { data: 'catalogName', title: 'Name'},
             { data: 'catalogDescription', title: 'Description'},
+            { data: 'image', title: 'Image'},
             { data: 'action', title : 'Action'}
         ],
         initComplete: function () {
@@ -196,10 +197,9 @@ $(document).ready(function() {
                 <input type="text" name="catalogName" class="form-control">
                 <label>Description</label>
                 <input type="text" name="catalogDescription" class="form-control">
-               
+                <label>Picture</label>
+                <input type="file" name="photo" class="form-control" accept="image/x-png,image/gif,image/jpeg">    
         `;
-        // <label>Picture</label>
-        //         <input type="file" name="catalogpicture" class="form-control" accept="image/x-png,image/gif,image/jpeg">
 
         if(type != "New" && !id)
         {
