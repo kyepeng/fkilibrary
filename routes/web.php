@@ -51,6 +51,10 @@ Route::group(['middleware' => ['auth']], function()
 	//Report
 	Route::get('report/{start?}/{end?}','ReportController@index');
 
+	//Profile
+	Route::get('profile','ProfileController@index');
+	Route::post('updateprofile','ProfileController@update');
+
 	Route::get('successPage',function(){
 		return view('layouts.success');
 	});
@@ -73,4 +77,8 @@ Route::get('searchresult','SearchController@index');
 Route::get('getSearchResult','SearchController@getData');
 //no login
 Auth::routes();
+
+
+
+
 

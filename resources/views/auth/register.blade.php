@@ -11,6 +11,7 @@
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
+                        <input type="hidden" name="type" id="type">
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Name</label>
 
@@ -39,6 +40,70 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                        <label for="gender" class="col-md-4 control-label">Gender</label>
+
+                            <div class="col-md-6">
+                            <select name="gender" id="gender" class="form-control select2">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('matric') ? ' has-error' : '' }}">
+                            <label for="matric" class="col-md-4 control-label">Matric No</label>
+
+                            <div class="col-md-6">
+                                <input id="matric" type="text" class="form-control" name="matric" placeholder="BI12345678"  value="{{ old('matric') }}" required>
+
+                                @if ($errors->has('matric'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('matric') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                        <label for="year" class="col-md-4 control-label">Year</label>
+
+                            <div class="col-md-6">
+                                <select name="year" id="year" class="form-control select2">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                        <label for="course" class="col-md-4 control-label">Course</label>
+
+                            <div class="col-md-6">
+                                <select name="course" id="course" class="form-control select2">
+                                <option value="1">HC 12 Multimedia Technology</option>
+                                <option value="2">HC 13 Business Computing</option>
+                                
+                                </select>
+                            </div>
+                        </div>
+
+                       
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <label for="phone" class="col-md-4 control-label">Phone</label>
+                        <div class="col-md-6">
+                          <input type="text" class="form-control" name="phone" required>
+
+                            @if ($errors->has('phone'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('phone') }}</strong>
+                                    </span>
+                            @endif
+                        </div>
+                        </div>
+                        
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">Password</label>
 
@@ -52,6 +117,7 @@
                                 @endif
                             </div>
                         </div>
+                        
 
                         <div class="form-group">
                             <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
