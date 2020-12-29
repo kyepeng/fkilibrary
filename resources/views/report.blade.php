@@ -34,14 +34,14 @@
                         <!-- Fine Collected Today -->
                         <div class="col-md-6">
                             <div class="chart box">
-                                <div id="fine"></div>
+                                <a href="{{url('finereport')}}/{{$start}}/{{$end}}"><div id="fine"></div></a>
                             </div>
                         </div>
 
                         <!-- Total Book Today -->
                         <div class="col-md-6">
                             <div class="chart box">
-                                <div id="booklog"></div>
+                                <a href="{{url('logreport')}}/{{$start}}/{{$end}}"><div id="booklog"></div></a>
                             </div>
                         </div>
                     </div>
@@ -131,7 +131,7 @@ $(document).ready(function() {
     title:{
         text: "Book Log"
     },
-    colors: ['#022CD6','#DA2C06','#DA2C06']
+    colors: ['#022CD6','#74FF00','#DA2C06']
     };
 
     var chart = new ApexCharts(document.querySelector("#booklog"), options);

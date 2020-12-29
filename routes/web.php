@@ -50,6 +50,10 @@ Route::group(['middleware' => ['auth']], function()
 
 	//Report
 	Route::get('report/{start?}/{end?}','ReportController@index');
+	Route::get('finereport/{start?}/{end?}','ReportController@finereport');
+	Route::get('logreport/{start?}/{end?}','ReportController@logreport');
+	Route::get('getFineData','ReportController@getFineData');
+	Route::get('getLogData','ReportController@getLogData');
 
 	//Profile
 	Route::get('profile','ProfileController@index');

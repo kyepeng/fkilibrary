@@ -41,7 +41,7 @@ class updatePenalty extends Command
     {  
         //check overdue
         $expired = Booklog::select(DB::raw('DATEDIFF(CURDATE(),end_date) as expired_day'),'id','fine')
-        ->whereRaw('end_date < CURDATE() AND status = "Borrow"')
+        ->whereRaw('end_date < CURDATE() AND status = "Borrow" AND paid = 0')
         ->get();
 
         foreach($expired as $exp)
