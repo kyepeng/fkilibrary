@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\BookLog;
 use App\Book;
 use App\User;
+use App\Catalog;
 use DB;
 
 class HomeController extends Controller
@@ -104,6 +105,9 @@ class HomeController extends Controller
     {
         $me = (new CommonController)->thisuser();
 
-        return view('main',compact('me'));
+        $catalog = Catalog::all()->chunk(4);
+        $book = Book::all()->chunk(4);
+
+        return view('main',compact('me','catalog','book'));
     }
 }

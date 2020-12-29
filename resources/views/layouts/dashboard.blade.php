@@ -102,7 +102,7 @@
           /*left: 15%;*/
         }
         .carouselImage{
-          margin-left: 10%;
+          margin-left: 8%;
           width: 150px;
           height: 200px;
         }
@@ -272,10 +272,10 @@
                 $('#'+param.loader).hide();
             },
             error : function(data){
-                if(param.hide)
-                {
-                    $('#'+param.modal).modal('hide');
-                }
+                // if(param.hide)
+                // {
+                //     $('#'+param.modal).modal('hide');
+                // }
                 var errors = data.responseJSON;
                 var message = "";
                 for (var error in errors)
