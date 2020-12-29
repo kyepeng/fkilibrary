@@ -18,24 +18,41 @@
                             </a>
                               <br><br><br>
                                 <p style="margin:0 0 36px; text-align:center; font-size:16px; line-height:22px; text-transform:uppercase; color:#626658;">
-                                    FKILibrary Notice
+                                    FKILibrary Book {{$type}} Statement
                                 </p>
                                 <p style="margin:0 0 36px; text-align:center; font-size:16px; line-height:22px; color:#626658;">
                                 </p>
                                     <table>
+                                      <tr> 
+                                        <td>Student :</td>
+                                        <td style="font-weight: bold">{{$detail->name}}</td>
+                                      </tr>
+                                      <tr> 
+                                        <td>Matric No :</td>
+                                        <td style="font-weight: bold">{{$detail->matric}}</td>
+                                      </tr>
                                       <tr>
                                         <td>Book Title : </td>
-                                        <td style="font-weight: bold">{{$exp->bookName}}</td>
+                                        <td style="font-weight: bold">{{$detail->bookName}}</td>
                                       </tr>
                                       <tr>
-                                        <td>Start Date : </td>
-                                        <td style="font-weight: bold">{{$exp->start_date}}</td>
+                                        <td>Book ISBN : </td>
+                                        <td style="font-weight: bold">{{$detail->ISBN}}</td>
                                       </tr>
                                       <tr>
-                                        <td>End Date : </td>
-                                        <td style="font-weight: bold">{{$exp->end_date}}</td>
+                                        <td>Borrow Date : </td>
+                                        <td style="font-weight: bold">{{$detail->start_date}}</td>
                                       </tr>
-                                      <tr> <h4>Please Renew or Return Before {{$exp->end_date}}</h4></tr>
+                                      <tr>
+                                        <td>Return Date : </td>
+                                        <td style="font-weight: bold">{{$detail->end_date}}</td>
+                                      </tr>
+                                      @if($fine)
+                                      <tr>
+                                        <td>Fine Amount: </td>
+                                        <td style="font-weight: bold">{{$fine}}</td>
+                                      </tr>
+                                      @endif
                                     </table>
 
                                 <p style="margin:0; padding:34px 0 0; text-align:center; font-size:12px; line-height:13px; color:#333333;">

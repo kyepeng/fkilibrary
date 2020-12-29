@@ -92,13 +92,26 @@ class BookController extends Controller
             return response()->json($validator->errors(), 404);
         }
 
+
         if($request->id)
         {
-            Book::find($request->id)->update($request->except('id','_token'));
+            $item = Book::find($request->id);
+            $item->update($request->except('id','_token'));
         }
         else
         {
-            Book::create($request->except('id','_token'));
+            $item = Book::create($request->except('id','_token'));
+        }
+
+        if($request->hasFile('photo'))
+        {
+            $filenameWithExt = $request->file('photo')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('photo')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            $path = $request->file('photo')->storeAs('public/book',$fileNameToStore);
+            $item->image_path = $fileNameToStore ;
+            $item->save(); 
         }
     }
 }

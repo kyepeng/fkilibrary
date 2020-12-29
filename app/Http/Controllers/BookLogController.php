@@ -95,11 +95,13 @@ class BookLogController extends Controller
 
     public function returnBookForm()
     {
+        $me = (new CommonController)->thisuser();
+
     	$books = Book::all();
 
     	$users = User::where('type','Student')->get();
 
-    	return view('returnbookform',compact('books','users'));
+    	return view('returnbookform',compact('me','books','users'));
     }
 
     public function getLogInfo(request $request)
@@ -172,7 +174,10 @@ class BookLogController extends Controller
 
         $request->merge(['start_date' => date('Y-m-d') , 'end_date' => date('Y-m-d',strtotime('today + 7 days'))]);
 
-        BookLog::create($request->except('id','_token'));
+        $created = BookLog::create($request->except('id','_token'));
+
+        $this->sendEmail($created,$request->type);
+
     }
 
     public function bookForm($id)
@@ -189,13 +194,34 @@ class BookLogController extends Controller
 
     	$created = BookLog::create($request->except('_token'));
 
-    	$detail = BookLog::where('book_logs.id',$created->id)->join('books','books.id','=','book_logs.bookId')->join('users','users.id','=','book_logs.userId')->first();
-
-    	Mail::send('emails.bookissue', compact('detail'), function($message) use ($detail)
-        { 
-                $message->to($detail->email)->subject("You’ve issued a book on ".date('Y-m-d'));
-        });
+    	$this->sendEmail($created,'Issue');
 
         return view('layouts.success');
+    }
+
+    public function sendEmail($created,$type)
+    {   
+
+        $text = "issued";
+        $blade = "emails.bookissue";
+        if($type == "Return")
+        {
+            $text = "returned";
+            $blade = "emails.update";
+        }
+        else if($type == "Renew")
+        {
+            $text = "renew";
+            $blade = "emails.update"; 
+        }
+        $title = "You’ve ".$text." a book on ".date('Y-m-d');
+
+        $detail = BookLog::where('book_logs.id',$created->id)->join('books','books.id','=','book_logs.bookId')->join('users','users.id','=','book_logs.userId')->first();
+
+        $fine = BookLog::where('userId',$detail->userId)->where('bookId',$detail->bookId)->where('status','Borrow')->orderBy('id','DESC')->first()->fine;
+        Mail::send($blade, compact('detail','type','fine'), function($message) use ($detail,$title)
+        { 
+                $message->to($detail->email)->subject($title);
+        });
     }
 }

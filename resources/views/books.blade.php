@@ -220,6 +220,8 @@ $(document).ready(function() {
                     <option value="{{$she->id}}">{{$she->displayName}}</option>
                     @endforeach
                 </select>
+                <label>Photo</label>
+                <input name="photo" type="file" class="form-control">
         `;
 
         if(type != "New" && !id)
