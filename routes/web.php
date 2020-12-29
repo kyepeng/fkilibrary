@@ -35,7 +35,7 @@ Route::group(['middleware' => ['auth']], function()
 	//Form
 	Route::get('returnbookForm','BookLogController@returnBookForm');
 	Route::get('getLogInfo','BookLogController@getLogInfo');
-	Route::get('bookForm/{id}','BookLogController@bookForm');
+	Route::get('bookForm/{id}/{type}','BookLogController@bookForm');
 	Route::post('submitBookForm','BookLogController@submitBookForm');
 
 	//Catalog
