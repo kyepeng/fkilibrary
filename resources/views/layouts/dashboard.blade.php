@@ -110,9 +110,13 @@
         .studentmenu{
           font-size: 17px;
           position: absolute;
-          padding-right: 40%;
+          padding-right: 35%;
           padding-top: 1px;
 
+        }
+        .studentmenu a{
+            padding-right: 10px;
+            padding-left: 10px;
         }
         .dropdown {
           position: relative;
@@ -130,7 +134,6 @@
 
         .dropdown-content a {
           color: black;
-          padding: 12px 16px;
           text-decoration: none;
           display: block;
         }
@@ -210,18 +213,17 @@
                     <div class="topmenu studentmenu">
                     
              
-                    <a href=#>Home&nbsp;</a>
-                    <a href=#>&nbsp;About&nbsp;</a>
-                    <div class="dropdown">
-                    <a href=#>&nbsp;Catalog&nbsp;</a>
-                    <div class="dropdown-content">
-                        <a href="#">Link 1</a>
-                        <a href="#">Link 2</a>
-                        <a href="#">Link 3</a>
-                    </div>
-                    </div>
-                    <a href=#>&nbsp;Report</a>
-            
+                        <a href="{{url('main')}}">Home</a>
+                        <a href="{{url('')}}">About</a>
+                        <div class="dropdown">
+                            <a href="{{url('catalog')}}">Catalog</a>
+                            <div class="dropdown-content">
+                                <a href="#">Link 1</a>
+                                <a href="#">Link 2</a>
+                                <a href="#">Link 3</a>
+                            </div>
+                        </div>
+                        <a href="{{url('report')}}">Report</a>
                     </div>
 
                     <div class="header-left">
