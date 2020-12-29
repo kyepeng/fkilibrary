@@ -191,7 +191,7 @@
 
                         <div class="user-menu dropdown-menu">
                             @if(Auth::check())
-                            <a class="nav-link" href="#"><i class="fa fa-user"></i>My Profile</a>
+                            <a class="nav-link" href="{{url('profile')}}"><i class="fa fa-user"></i>My Profile</a>
                             <a class="nav-link" href="{{url('logout')}}"><i class="fa fa-power-off"></i>Logout</a>
                             @else
                             <a class="nav-link" href="{{url('login')}}"><i class="fa fa-power-off"></i>Login</a>

@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Course;
 
 class RegisterController extends Controller
 {
@@ -34,6 +35,8 @@ class RegisterController extends Controller
      *
      * @return void
      */
+
+
     public function __construct()
     {
         $this->middleware('guest');
@@ -47,9 +50,15 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+       
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
+            'gender'=>'required',
+            'matric'=>'required|unique:users|max:10|min:10|regex:/^[BI1-9]+$/' ,
+            'year'=>'required',
+            'course'=>'required',
+            'phone'=>'required|regex:/^(01)[0-46-9]*[0-9]{7,8}$/|max:11|min:10',
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -64,7 +73,13 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
+            'type'=>$data['type'],
             'email' => $data['email'],
+            'gender'=>$data['gender'],
+            'matric'=>$data['matric'],
+            'year'=>$data['year'],
+            'course'=>$data['course'],
+            'phone'=>$data['phone'],
             'password' => bcrypt($data['password']),
         ]);
     }
