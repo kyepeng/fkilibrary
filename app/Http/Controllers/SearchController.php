@@ -81,9 +81,9 @@ class SearchController extends Controller
 	        ->first();
 
 	        $type = $list->quantity > $unreturn->borrowed ? "Borrow" : "Reserve";
-            $url = $list->quantity > $unreturn->borrowed ? url('bookForm').'/'.$list->id : url('reserveForm').'/'.$list->id;
+            $url = url('bookForm').'/'.$list->id."/".$type;
 
-            return '<a href="'.url('bookForm').'/'.$list->id.'" class="btn btn-primary">'.$type.'</a>';
+            return '<a href="'.$url.'" class="btn btn-primary">'.$type.'</a>';
         })
         ->rawColumns(['action','available'])
         ->make(true);

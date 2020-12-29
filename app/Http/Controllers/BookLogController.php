@@ -12,6 +12,7 @@ use App\Shelf;
 use App\Catalog;
 use App\User;
 use App\Booklog;
+use App\Reserve;
 
 class BookLogController extends Controller
 {
@@ -180,23 +181,30 @@ class BookLogController extends Controller
 
     }
 
-    public function bookForm($id)
+    public function bookForm($id,$type)
     {
     	$me = (new CommonController)->thisuser();
     	$book = Book::find($id);
 
-    	return view('bookForm',compact('me','id','book'));
+    	return view('bookForm',compact('me','id','book','type'));
     }
 
     public function submitBookForm(Request $request)
     {
     	$me = (new CommonController)->thisuser();
 
-    	$created = BookLog::create($request->except('_token'));
+        if($request->status == "Borrow")
+        {
+    	   $created = BookLog::create($request->except('_token'));
+    	   $this->sendEmail($created,'Issue');
+           return view('layouts.success');
+        }
+        else
+        {
+            Reserve::create($request->only('bookId','userId'));
+            return redirect('reservelist');
+        }
 
-    	$this->sendEmail($created,'Issue');
-
-        return view('layouts.success');
     }
 
     public function sendEmail($created,$type)

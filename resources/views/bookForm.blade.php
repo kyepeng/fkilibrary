@@ -89,7 +89,7 @@ $(document).ready(function() {
                                 <input type="hidden" name="bookId" value="{{$book->id}}">
                                 <input type="hidden" name="userId" value="{{$me->id}}">
                                 <input type="hidden" name="start_date" value="{{date('Y-m-d')}}">
-                                <input type="hidden" name="status" value="Borrow">
+                                <input type="hidden" name="status" value="{{$type}}">
                                 <div class="col-md-6">
                                     <label>Book ISBN</label>
                                     <input type="text" readonly="" class="form-control" value="{{$book->ISBN}}">
