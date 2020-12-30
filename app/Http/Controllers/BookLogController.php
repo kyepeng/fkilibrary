@@ -24,7 +24,7 @@ class BookLogController extends Controller
         $id = $request->id ?: 0;
 
         $list = DB::table('book_logs')
-        ->select(DB::raw('"" as no'),'id','bookId','userId','start_date','end_date','fine','paid','status')
+        ->select(DB::raw('"" as no'),DB::raw('"" as ISBN'),'id','bookId','userId','start_date','end_date','fine','paid','status')
         ->get();
 
         $users = User::where('type','Student')->get();
@@ -62,9 +62,9 @@ class BookLogController extends Controller
     	}
 
         $list = DB::table('book_logs')
-        // ->join(DB::raw('(SELECT Max(id) as maxid, bookId FROM book_logs GROUP BY bookId) as max'),'max.bookId','books.id')
+        ->join(DB::raw('(SELECT Max(id) as maxid, bookId FROM book_logs GROUP BY bookId) as max'),'max.maxid','book_logs.id')
         // ->join('book_logs','book_logs.id','=','max.maxid')
-        ->select(DB::raw('"" as no'),'book_logs.id','book_logs.bookId','userId','start_date','end_date','fine','paid','status')
+        ->select('book_logs.id','book_logs.bookId','userId','start_date','end_date','fine','paid','status')
         ->whereRaw($cond)
         ->get();
 
@@ -72,7 +72,11 @@ class BookLogController extends Controller
         ->addIndexColumn()
         ->addColumn('book', function($list){
             $book = Book::find($list->bookId);
-            return $book->bookName;
+            return "$book->bookName";
+        })
+        ->addColumn('ISBN',function($list){
+            $book = Book::find($list->bookId);
+            return "$book->ISBN";
         })
         ->addColumn('student', function($list){
             $user = User::find($list->userId);
@@ -80,7 +84,7 @@ class BookLogController extends Controller
         })
         ->addColumn('badge', function($list){
         	$class = "badge badge-success";
-        	if($list->status == "Borrow" && (date('Y-m-d') < $list->end_date) )
+        	if($list->status == "Borrow" && (date('Y-m-d') <= $list->end_date) )
         	{
         		$class = "badge badge-warning";
         	}

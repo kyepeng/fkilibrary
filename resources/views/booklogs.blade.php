@@ -30,6 +30,7 @@ $(document).ready(function() {
             { data: 'DT_RowIndex', title:"No"},
             { data: 'id'},
             { data: 'book', title: 'Book Name'},
+            { data: 'ISBN', title: 'Book ISBN'},
             { data: 'student', title: 'Student'},
             { data: 'start_date', title: 'Start Date'},
             { data: 'end_date', title: 'End Date'},
