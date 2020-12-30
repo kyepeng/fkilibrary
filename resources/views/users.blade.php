@@ -42,6 +42,7 @@ $(document).ready(function() {
 
         },
         buttons: [
+            
 
         ]
     });
@@ -51,73 +52,7 @@ $(document).ready(function() {
         return false;
     });
 
-    function openModal(type)
-    {
-        closeMessageBlock();
-        $('#submitBtn').prop('disabled',false);
-        $('#form_fields').empty();
-        $('#modal_text').html("");
 
-        if( $('.check:checked').length == 0 || type == "New")
-        {
-            appendSection(0,type);
-        }
-        else
-        {
-            $('.check:checked').each(function(){
-                appendSection($(this).val(),type);
-            });
-        }
-
-        $('#ActionModal').modal('show');
-    }
-
-    function appendSection(id,type)
-    {
-        var data =  oTable.row("#"+id).data();
-        var name = data ? data.name : "";
-        var email = data ? data.email : "";
-        var status = data ? (data.status == "Active" ? 1 : 0) : "";
-
-        var formfields = `
-                <input type="hidden" name="id[]" value="">
-                <label>Name</label>
-                <input type="text" name="name[]" class="form-control">
-                <label>Email Address</label>
-                <input type="email" name="email[]" class="form-control">
-        `;
-
-        if(type != "New" && !id)
-        {
-            formfields = `<h5>Please select a item to proceed</h5>`;
-            $('#submitBtn').prop('disabled',true);
-        }
-        else if(type == "Edit")
-        {
-            formfields += `
-                <label>Status</label>
-                <select class="form-control" name="status[]">
-                    <option value="1">Active</option>
-                    <option value="0">Inactive</option>
-                </select>
-                <hr>
-            `;
-        }
-        else if(type == "Delete")
-        {
-            $('#modal_text').html('<h5 class="redtext">Are you sure to remove this?</h5>')
-            formfields = `<input type="hidden" name="id[]" value="${id}">`;
-        }
-
-        $('#form_fields').append(formfields);
-
-        if(data)
-        {
-            $.each(data,function(key,value){
-                $(`input[name="${key}[]"]`).last().val(value);
-            });
-        }
-    }
 
 });
 </script>
@@ -236,17 +171,66 @@ $(document).ready(function() {
 </div><!-- .content -->
 
 <script type="text/javascript">
+    
+     function openModal(button)
+    {
+        var type = $(button).data('type') ? $(button).data('type') : "New";
+        var id = $(button).data('id') ? $(button).data('id') : 0;
+        closeMessageBlock();
+        $('#submitBtn').prop('disabled',false);
+        $('#form_fields').empty();
+        $('#modal_text').html("");
+        appendSection(id,type);
+
+        $('#ActionModal').modal('show');
+    }
+
+    function appendSection(id,type)
+    {
+        var data =  oTable.row("#"+id).data();
+        var formfields = `
+            <input type="hidden" name="id">
+       
+        `;
+
+        if( type == "Edit" )
+        {
+            formfields += `
+            <label>Action</label>
+            <select name="action" class="form-control select2">
+                <option>Renew</option>
+                <option>Return</option>
+            </select>
+            `
+        }
+        else if(type == "Delete")
+        {
+            $('#modal_text').html('<h5 class="redtext">Are you sure to remove this?</h5>')
+            formfields = `<input type="hidden" name="id" value="">`;
+        }
+
+
+        $('#form_fields').append(formfields);
+
+        if(data)
+        {
+            $.each(data,function(key,value){
+                $(`input[name="${key}"]`).val(value)
+                $(`select[name="${key}"]`).val(value).change();
+            });
+        }
+    }
     function Submit()
     {   
         var param = {
             'data' : new FormData($("#upload_form")[0]),
-            'myurl' : "{{ url('/updateUser') }}",
+            'myurl' : "{{ url('/updateUsers') }}",
             'form' : 1,
             'button' : "submitBtn",
             'modal' : "ActionModal",
             'onSuccess' : "Data Updated",
             'refresh' : 0,
-            'hide' : 0,
+            'hide' : 1,
             'loader' : 'ajaxloader'
         };
 

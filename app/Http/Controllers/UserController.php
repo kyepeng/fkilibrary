@@ -33,9 +33,22 @@ class UserController extends Controller
         return Datatables::of($list)
         ->addIndexColumn()
         ->addColumn('action', function($list){
-        	return '<button class="btn btn-danger" data-id="'.$list->id.'">Delete</button>';
+        	return '<button class="btn btn-danger" onclick="openModal(this)" data-type="Delete" data-id="'.$list->id.'">Delete</button>';
         })
         ->rawColumns(['action'])
         ->make(true);
     }
+    
+    public function update(Request $request)
+    {
+        $me = (new CommonController)->thisuser();
+        if($request->id)
+        {
+            User::find($request->id)->delete();
+            return 1;
+        }
+
+
+    }
 }
+
