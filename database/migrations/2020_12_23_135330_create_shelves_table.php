@@ -17,7 +17,7 @@ class CreateShelvesTable extends Migration
             $table->increments('id');
             $table->integer('shelf');
             $table->integer('row');
-            $table->integer('column');
+            // $table->integer('column');
             $table->string('displayName');
             $table->timestamps();
         });

@@ -235,7 +235,13 @@ class BookLogController extends Controller
 
         $detail = BookLog::where('book_logs.id',$created->id)->join('books','books.id','=','book_logs.bookId')->join('users','users.id','=','book_logs.userId')->first();
 
-        $fine = BookLog::where('userId',$detail->userId)->where('bookId',$detail->bookId)->where('status','Borrow')->orderBy('id','DESC')->first()->fine;
+        $fine = BookLog::where('userId',$detail->userId)
+        ->where('bookId',$detail->bookId)
+        ->where('Id','<>',$created->id)
+        ->where('status','Borrow')
+        ->orderBy('id','DESC')
+        ->first();
+
         Mail::send($blade, compact('detail','type','fine'), function($message) use ($detail,$title)
         { 
                 $message->to($detail->email)->subject($title);

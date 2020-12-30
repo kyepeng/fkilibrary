@@ -83,7 +83,7 @@
 
         .carousel-item {
           /*width: 100px;*/
-          margin-top: 30px;
+          margin-top: 5px;
           height: 40vh;
           min-height: 350px;
           background: no-repeat center center scroll;
@@ -91,7 +91,7 @@
           -moz-background-size: cover;
           -o-background-size: cover;
           background-size: cover;
-          background: black;
+          background: lightgrey;
         }
         .carouselContent{
           width: 100%;

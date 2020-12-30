@@ -1,7 +1,14 @@
 @extends('layouts.dashboard')    
 
 @section('content')
-
+<style type="text/css">
+  .right-panel{
+    background: white;
+  }
+  .carousel-inner{
+    margin-top: 10px;
+  }
+</style>
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -18,12 +25,12 @@ $(document).ready(function() {
       @endforeach
     </ol>
     <div class="carousel-inner" role="listbox">
-
+      <h4 class="carouseltitle">Catalog</h4>
       @foreach($catalog as $catkey => $catvalue)
         <div class="carousel-item {{$catkey == 0 ? 'active' : ''}}">
           <div class="carouselContent">
             @foreach($catvalue as $icatvalue)
-            <a href="{{url('searchresult')}}?catalog={{$icatvalue->id}}"><img src="{{asset('storage/public/catalog')}}/{{$icatvalue->image_path}}"  width="100" height="100" class="carouselImage"></a>
+            <a href="{{url('searchresult')}}?catalog={{$icatvalue->id}}"><img src="{{asset('storage/public/catalog')}}/{{$icatvalue->image_path}}"  width="100" height="100" class="carouselImage" title="{{$icatvalue->catalogName}}"></a>
             @endforeach
           </div>
         </div>
@@ -48,15 +55,16 @@ $(document).ready(function() {
     </ol>
     <div class="carousel-inner" role="listbox">
 
-      @foreach($book as $bookkey => $bookvalue)
-        <div class="carousel-item {{$bookkey == 0 ? 'active' : ''}}">
-          <div class="carouselContent">
-            @foreach($bookvalue as $ibookvalue)
-            <a href="{{url('searchresult')}}?book={{$ibookvalue->id}}"><img src="{{asset('storage/public/book')}}/{{$ibookvalue->image_path}}"  width="100" height="100" class="carouselImage"></a>
-            @endforeach
+        <h4 class="carouseltitle">Books</h4>
+        @foreach($book as $bookkey => $bookvalue)
+          <div class="carousel-item {{$bookkey == 0 ? 'active' : ''}}">
+            <div class="carouselContent">
+              @foreach($bookvalue as $ibookvalue)
+              <a href="{{url('searchresult')}}?book={{$ibookvalue->id}}"><img src="{{asset('storage/public/book')}}/{{$ibookvalue->image_path}}"  width="100" height="100" class="carouselImage" title="{{$ibookvalue->bookName}}"></a>
+              @endforeach
+            </div>
           </div>
-        </div>
-      @endforeach
+        @endforeach
 
     </div>
     <a class="carousel-control-prev" href="#books" role="button" data-slide="prev">
