@@ -81,32 +81,6 @@
             }
         @endif
 
-        .carousel-item {
-          /*width: 100px;*/
-          margin-top: 5px;
-          height: 40vh;
-          min-height: 350px;
-          background: no-repeat center center scroll;
-          -webkit-background-size: cover;
-          -moz-background-size: cover;
-          -o-background-size: cover;
-          background-size: cover;
-          background: lightgrey;
-        }
-        .carouselContent{
-          width: 100%;
-          position: absolute;
-          display: block;
-          bottom: 10vh;
-          text-align: center;
-          /*left: 15%;*/
-        }
-        .carouselImage{
-          margin-left: 8%;
-          width: 150px;
-          height: 200px;
-        }
-
         .studentmenu{
           font-size: 17px;
           position: absolute;
@@ -266,7 +240,7 @@
 
         <div class="clearfix"></div>
 
-        <footer class="site-footer">
+        <!-- <footer class="site-footer">
             <div class="footer-inner bg-white">
                 <div class="row">
                     <div class="col-sm-12">
@@ -274,7 +248,7 @@
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer> -->
 
     </div><!-- /#right-panel -->
 

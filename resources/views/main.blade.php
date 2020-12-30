@@ -2,12 +2,69 @@
 
 @section('content')
 <style type="text/css">
-  .right-panel{
-    background: white;
-  }
-  .carousel-inner{
-    margin-top: 10px;
-  }
+    .content{
+      padding: 0;
+      height: 100vh;
+      background: no-repeat center center scroll;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-image: url("{{asset('images/wood.jpg')}}");
+    }
+
+    .carousel-item {
+      left: 0;
+      /*margin-top: 5px;*/
+      height: 20vh;
+      min-height: 200px;
+      background: rgba(255, 255, 255, 0.7);
+      /*background-image: url("{{asset('images/wood.jpg')}}");*/
+    }
+    .carouselContent{
+      width: 100%;
+      position: absolute;
+      display: block;
+      bottom: 8vh;
+      text-align: center;
+      /*left: 15%;*/
+    }
+    .carouselImage{
+      margin-left: 7%;
+      width: 80px;
+      height: 100px;
+    }
+
+    .carouselImage:hover{
+      width: 170px;
+      height: 130px;
+    }
+
+    .right-panel{
+      background: white;
+    }
+
+    .carousel-inner{
+      margin-top: 10px;
+    }
+
+    #books.carousel{
+      position: fixed;
+      top: 60vh;
+      width: 100%;
+    }
+
+    #catalog.carousel{
+      position: fixed;
+      top: 20vh;
+      width: 100%;
+    }
+
+    .carouseltitle{
+      font-weight: bold;
+      color: white;
+    }
+
 </style>
 <script type="text/javascript">
 $(document).ready(function() {

@@ -18,7 +18,11 @@ $(document).ready(function() {
                     <strong class="card-title">Introduction</strong>
                 </div>
                 <div class="card-body">
-
+                    <p>
+                        FKI Library is a mini library for faculty multimedia and faculty information and computing.
+                        We provide vital support for students, researchers and staff, complementing academic activities.
+                        Easier and manageable self-service book borrowing library.
+                    </p> 
                 </div>
             </div>
         </div>
