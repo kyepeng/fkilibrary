@@ -19,7 +19,7 @@ Route::group(['middleware' => ['auth']], function()
 	//User
 	Route::get('users','UserController@index');
 	Route::get('getUsers','UserController@getUsers');
-	Route::post('updateUsers','UserController@updateUsers');
+	Route::post('updateUsers','UserController@update');
 	Route::post('deleteUsers','UserController@deleteUsers');
 
 	//Books
