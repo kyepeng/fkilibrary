@@ -20,11 +20,11 @@ class BookController extends Controller
         ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','price','quantity','image_path',DB::raw('"" as catalog'),DB::raw('"" as shelf'),DB::raw('"" as action'))
         ->get();
 
-        $catalog = Catalog::all();
+        $allcatalog = Catalog::all();
 
         $shelf = Shelf::all();
 
-        return view('books',compact('me','list','shelf','catalog'));
+        return view('books',compact('me','list','shelf','allcatalog'));
     }
 
     public function getData()
@@ -123,5 +123,60 @@ class BookController extends Controller
             $item->image_path = $fileNameToStore ;
             $item->save(); 
         }
+    }
+
+    public function reservelist()
+    {
+        $me = (new CommonController)->thisuser();
+
+        $allcatalog = Catalog::all();
+
+        $list = DB::table('reserves')
+        ->leftjoin('books','books.id','=','reserves.bookId')
+        ->select('reserves.id','userId','books.ISBN','books.bookName','catalogId','shelfId','reserves.created_at')
+        ->get();
+
+        return view('reservelist',compact('me','list','allcatalog'));
+    }
+
+    public function getReserveData()
+    {
+        $me = (new CommonController)->thisuser();
+
+        $list = DB::table('reserves')
+        ->leftjoin('books','books.id','=','reserves.bookId')
+        ->select('reserves.id','quantity','bookId','books.ISBN','books.bookName','catalogId','shelfId','reserves.created_at')
+        ->where('checked',0)
+        ->get();
+
+        return Datatables::of($list)
+        ->addIndexColumn()
+        ->addColumn('shelf', function($list){
+            $shelf = Shelf::find($list->shelfId);
+            return $shelf ? $shelf->displayName : '-';
+        })
+        ->addColumn('catalog', function($list){
+            $catalog = Catalog::find($list->catalogId);
+            return $catalog ? $catalog->catalogName : '-';
+        })
+        ->addColumn('action', function($list){
+            $unreturn = Book::join(DB::raw('(SELECT Max(id) as maxid, bookId FROM book_logs GROUP BY bookId) as max'),'max.bookId','books.id')
+            ->join('book_logs','book_logs.id','=','max.maxid')
+            ->select(DB::raw('COUNT(*) as borrowed'))
+            ->where('status','Borrow')
+            ->where('book_logs.bookId',$list->bookId)
+            ->first();
+
+            if($list->quantity > $unreturn->borrowed)
+            {
+                return '<button class="btn btn-primary" onclick="openModal(this)" data-id="'.$list->id.'">Borrow</button>';
+            }
+            else
+            {
+                return '<span class="badge badge-danger">Not Available</span>';
+            }
+        })
+        ->rawColumns(['action'])
+        ->make(true);
     }
 }

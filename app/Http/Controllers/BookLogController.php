@@ -19,6 +19,7 @@ class BookLogController extends Controller
     public function index(Request $request)
     {	
         $me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();
 
         $id = $request->id ?: 0;
 
@@ -30,7 +31,7 @@ class BookLogController extends Controller
 
         $books = Book::all();
 
-        return view('booklogs',compact('me','list','users','books','id'));
+        return view('booklogs',compact('me','list','users','books','id','allcatalog'));
     }
 
     public function getData(Request $request)
@@ -97,12 +98,13 @@ class BookLogController extends Controller
     public function returnBookForm()
     {
         $me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();
 
     	$books = Book::all();
 
     	$users = User::where('type','Student')->get();
 
-    	return view('returnbookform',compact('me','books','users'));
+    	return view('returnbookform',compact('me','books','users','allcatalog'));
     }
 
     public function getLogInfo(request $request)
@@ -184,9 +186,11 @@ class BookLogController extends Controller
     public function bookForm($id,$type)
     {
     	$me = (new CommonController)->thisuser();
+        $allcatalog = Catalog::all();
+
     	$book = Book::find($id);
 
-    	return view('bookForm',compact('me','id','book','type'));
+    	return view('bookForm',compact('me','id','book','type','allcatalog'));
     }
 
     public function submitBookForm(Request $request)
@@ -195,7 +199,12 @@ class BookLogController extends Controller
 
         if($request->status == "Borrow")
         {
-    	   $created = BookLog::create($request->except('_token'));
+            if($request->id)
+            {
+                Reserve::find($request->id)->update(['checked'=>1]);
+            }
+
+    	   $created = BookLog::create($request->except('_token','id'));
     	   $this->sendEmail($created,'Issue');
            return view('layouts.success');
         }
@@ -226,7 +235,13 @@ class BookLogController extends Controller
 
         $detail = BookLog::where('book_logs.id',$created->id)->join('books','books.id','=','book_logs.bookId')->join('users','users.id','=','book_logs.userId')->first();
 
-        $fine = BookLog::where('userId',$detail->userId)->where('bookId',$detail->bookId)->where('status','Borrow')->orderBy('id','DESC')->first()->fine;
+        $fine = BookLog::where('userId',$detail->userId)
+        ->where('bookId',$detail->bookId)
+        ->where('Id','<>',$created->id)
+        ->where('status','Borrow')
+        ->orderBy('id','DESC')
+        ->first();
+
         Mail::send($blade, compact('detail','type','fine'), function($message) use ($detail,$title)
         { 
                 $message->to($detail->email)->subject($title);

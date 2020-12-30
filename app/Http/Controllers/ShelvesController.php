@@ -17,14 +17,14 @@ class ShelvesController extends Controller
         $me = (new CommonController)->thisuser();
 
         $list = DB::table('shelves')
-        ->select(DB::raw('"" as no'),'id','shelf','row','column','displayName',DB::raw('"" as action'))
+        ->select(DB::raw('"" as no'),'id','displayName',DB::raw('"" as action'))
         ->get();
 
-        $catalog = Catalog::all();
+        $allcatalog = Catalog::all();
 
         $shelf = Shelf::all();
 
-        return view('shelves',compact('me','list','shelf','catalog'));
+        return view('shelves',compact('me','list','shelf','allcatalog'));
     }
 
     public function getData()
@@ -54,24 +54,23 @@ class ShelvesController extends Controller
             return 1;
         }
 
-        $request->merge(['displayName' => 'S'.$request->shelf.'-R'.$request->row.'-C'.$request->column ]);
+        $request->merge(['displayName' => 'S'.$request->shelf.'-R'.$request->row ]);
         //Validator
         $rules = [
-            'row' => 'required',
+            // 'row' => 'required',
             'shelf' => 'required|max:1|regex:/^[1-5]+$/',
-            'column' => 'required|max:1|regex:/^[1-8]+$/', 
+            'row' => 'required|max:1|regex:/^[1-8]+$/', 
             'displayName' => 'unique:shelves,displayName'          
         ];
 
         $message = [
-            'row.required' => 'Row field is required',
+            // 'row.required' => 'Row field is required',
             'shelf.required' => 'Shelf field is required',
-            'column.required' => 'Column field is required', 
+            'row.required' => 'Row field is required', 
             'shelf.regex'=>'Shelf field should between 1 to 5' ,
-            'column.regex'=>'Column field should between 1 to 8' ,
+            'row.regex'=>'Row field should between 1 to 8' ,
             'displayName.unique'=>"The place has already been taken"
         ];
-
 
         $validator = Validator::make($request->all(),$rules,$message);
         
@@ -80,13 +79,6 @@ class ShelvesController extends Controller
             return response()->json($validator->errors(), 404);
         }
         
-        // $test=Shelf::where('displayName',$request->displayName)->first();
-        
-        // if($test)
-        // {
-        //    return  response()->json(['message'=>'Place had been taken'], 404);
-        
-        // }
         if($request->id)
         {
             

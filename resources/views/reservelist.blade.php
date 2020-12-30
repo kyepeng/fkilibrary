@@ -14,14 +14,17 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url" : "{{ url('getReserveList') }}"
+            "url" : "{{ url('getReserveData') }}"
         },
         columnDefs: [
         { "width": "2%", "targets": [0] }
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
-            { data: 'book', title: 'Book'},
+            { data: 'ISBN', title: 'Book ISBN'},
+            { data: 'bookName', title: 'Book Name'},
+            { data: 'catalog', title: 'Catalog'},
+            { data: 'shelf', title: 'Shelf'},
             { data: 'created_at', title: 'Created At'},
             { data: 'action', title : 'Action'}
         ],
@@ -93,10 +96,15 @@ $(document).ready(function() {
                 <form id="upload_form" enctype="multipart/form-data" method="POST" action="">
                   {{ csrf_field() }}
                 <div id="modal_text">
-                    
+                    Are you sure to proceed?
                 </div>
                 <div id="form_fields">
-
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="bookId" id="bookId">
+                    <input type="hidden" name="userId" value="{{$me->id}}">
+                    <input type="hidden" name="start_date" value="{{date('Y-m-d')}}">
+                    <input type="hidden" name="start_date" value="{{date('Y-m-d',strtotime('today + 7 days'))}}">
+                    <input type="hidden" name="status" value="Borrow">
                 </div>
                 <br><br>
                 <div class="modal-footer">
@@ -165,15 +173,12 @@ $(document).ready(function() {
 <script type="text/javascript">
      function openModal(button)
     {
-        var type = $(button).data('type') ? $(button).data('type') : "New";
-        var id = $(button).data('id') ? $(button).data('id') : 0;
+        var id = $(button).data('id');
+        var data =  oTable.row("#"+id).data();
         closeMessageBlock();
         $('#submitBtn').prop('disabled',false);
-        $('#form_fields').empty();
-        $('#modal_text').html("");
-
-        appendSection(id,type);
-
+        $('#id').val(data.id);
+        $('#bookId').val(data.id);
         $('#ActionModal').modal('show');
     }
 
@@ -181,7 +186,7 @@ $(document).ready(function() {
     {   
         var param = {
             'data' : new FormData($("#upload_form")[0]),
-            'myurl' : "{{ url('/updateBooks') }}",
+            'myurl' : "{{ url('/submitBookForm') }}",
             'form' : 1,
             'button' : "submitBtn",
             'modal' : "ActionModal",

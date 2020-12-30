@@ -19,6 +19,8 @@ class ProfileController extends Controller
     {
         $me = (new CommonController)->thisuser();
 
+        $allcatalog = Catalog::all();
+
         $list = DB::table('users')
         ->select('id','name','type','matric','course','year','gender')
         ->get();
@@ -29,7 +31,7 @@ class ProfileController extends Controller
 
         $course=Course::all();
 
-        return view('profile',compact('me','list','shelf','catalog','course'));
+        return view('profile',compact('me','list','shelf','catalog','course','allcatalog'));
     }
 
     public function update(Request $request)

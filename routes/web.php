@@ -60,7 +60,9 @@ Route::group(['middleware' => ['auth']], function()
 	Route::post('updateprofile','ProfileController@update');
 
 	//Reserve 
-	
+	Route::get('reservelist','BookController@reservelist');
+	Route::get('getReserveData','BookController@getReserveData');
+
 	Route::get('successPage',function(){
 		return view('layouts.success');
 	});
@@ -78,7 +80,7 @@ Route::get('/', function(){
 	return redirect($path);
 });
 Route::get('main', 'HomeController@main');
-
+Route::get('about', 'HomeController@about');
 Route::get('searchresult','SearchController@index');
 Route::get('getSearchResult','SearchController@getData');
 //no login

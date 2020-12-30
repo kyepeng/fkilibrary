@@ -83,7 +83,7 @@
 
         .carousel-item {
           /*width: 100px;*/
-          margin-top: 30px;
+          margin-top: 5px;
           height: 40vh;
           min-height: 350px;
           background: no-repeat center center scroll;
@@ -91,7 +91,7 @@
           -moz-background-size: cover;
           -o-background-size: cover;
           background-size: cover;
-          background: black;
+          background: lightgrey;
         }
         .carouselContent{
           width: 100%;
@@ -159,6 +159,7 @@
                     <li>
                         <a href="{{url('/')}}"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
                     </li>
+                    @if($me->type == "Admin")
                     <li class="menu-title">Resource Management</li><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>User Management</a>
@@ -176,6 +177,7 @@
                             <li><i class="fa fa-file-text-o"></i><a href="{{url('catalog')}}">Catalog</a></li>
                         </ul>
                     </li>
+                    @endif
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-pie-chart"></i>Report Management</a>
                         <ul class="sub-menu children dropdown-menu">                            
@@ -214,16 +216,19 @@
                     
              
                         <a href="{{url('main')}}">Home</a>
-                        <a href="{{url('')}}">About</a>
+                        <a href="{{url('about')}}">About</a>
                         <div class="dropdown">
-                            <a href="{{url('catalog')}}">Catalog</a>
+                            <a href="#">Catalog</a>
                             <div class="dropdown-content">
-                                <a href="#">Link 1</a>
-                                <a href="#">Link 2</a>
-                                <a href="#">Link 3</a>
+                                @foreach($allcatalog as $allcat)
+                                <a href="{{url('searchresult')}}?catalog={{$allcat->id}}">{{$allcat->catalogName}}</a>
+                                @endforeach
                             </div>
                         </div>
+                        @if( Auth::check() )
                         <a href="{{url('report')}}">Report</a>
+                        <a href="{{url('reservelist')}}">Reserve List</a>
+                        @endif
                     </div>
 
                     <div class="header-left">

@@ -19,18 +19,12 @@ $(document).ready(function() {
         },
         columnDefs: [
         { "visible": false, "targets": [1] }, 
-        {"className": "dt-center", "targets": "_all"},
-        { "visible": false, "targets": [2] }, 
-        { "visible": false, "targets": [3] }, 
-        { "visible": false, "targets": [4] }, 
+        {"className": "dt-center", "targets": "_all"}, 
         { "width": "2%", "targets": [0] }
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
             { data: 'id'},
-            { data: 'shelf'},
-            { data: 'row'},
-            { data: 'column'},
             { data: 'displayName', title: 'Name'},
             { data: 'action', title : 'Action'}
         ],
@@ -200,11 +194,7 @@ $(document).ready(function() {
                 <label>Shelf</label>
                 <input type="number" name="shelf" class="form-control">
                 <label>Row</label>
-                <input type="number" name="row" class="form-control">
-                <label>Column</label>
-                <input type="number" name="column" class="form-control">
-                
-               
+                <input type="number" name="row" class="form-control">               
         `;
         // <label>Picture</label>
         //         <input type="file" name="catalogpicture" class="form-control" accept="image/x-png,image/gif,image/jpeg">

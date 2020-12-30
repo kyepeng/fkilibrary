@@ -47,10 +47,10 @@
                                         <td>Return Date : </td>
                                         <td style="font-weight: bold">{{$detail->end_date}}</td>
                                       </tr>
-                                      @if($fine)
+                                      @if($fine && $fine->fine > 0)
                                       <tr>
                                         <td>Fine Amount: </td>
-                                        <td style="font-weight: bold">{{$fine}}</td>
+                                        <td style="font-weight: bold">{{$fine->fine}}</td>
                                       </tr>
                                       @endif
                                     </table>
