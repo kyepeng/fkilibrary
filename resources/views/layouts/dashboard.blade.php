@@ -159,6 +159,7 @@
                     <li>
                         <a href="{{url('/')}}"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
                     </li>
+                    @if($me->type == "Admin")
                     <li class="menu-title">Resource Management</li><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>User Management</a>
@@ -176,6 +177,7 @@
                             <li><i class="fa fa-file-text-o"></i><a href="{{url('catalog')}}">Catalog</a></li>
                         </ul>
                     </li>
+                    @endif
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-pie-chart"></i>Report Management</a>
                         <ul class="sub-menu children dropdown-menu">                            

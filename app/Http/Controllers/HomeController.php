@@ -90,7 +90,8 @@ class HomeController extends Controller
         ->first();
 
         $fine = BookLog::whereRaw('CAST(updated_at as date) = CURDATE()')
-        ->sum('paid') ?: -1;
+        ->sum('paid') > 0 ? BookLog::whereRaw('CAST(updated_at as date) = CURDATE()')
+        ->sum('paid') : -1;
         
         $booktitle = ['Issued','Returned','Non-Return'];
         $bookdata = [];

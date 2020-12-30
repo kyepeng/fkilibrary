@@ -51,7 +51,7 @@ class ReportController extends Controller
         ->whereRaw($cond)
         ->first()->count;
 
-        $fine = BookLog::whereRaw($cond2)->sum('paid') ?: -1;
+        $fine = BookLog::whereRaw($cond2)->sum('paid') > 0 ? BookLog::whereRaw($cond2)->sum('paid') : -1;
         $booktitle = ['Issued','Returned','Non-Return'];
         $bookdata = [];
         $bookdata[0] = $issue;

@@ -35,7 +35,7 @@ class UserController extends Controller
         return Datatables::of($list)
         ->addIndexColumn()
         ->addColumn('action', function($list){
-        	return '<button class="btn btn-danger" data-id="'.$list->id.'">Delete</button>';
+        	return '<button class="btn btn-danger" data-id="'.$list->id.'" onclick="openModal(Delete)">Delete</button>';
         })
         ->rawColumns(['action'])
         ->make(true);
