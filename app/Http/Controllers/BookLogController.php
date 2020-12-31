@@ -194,7 +194,14 @@ class BookLogController extends Controller
 
     	$book = Book::find($id);
 
-    	return view('bookForm',compact('me','id','book','type','allcatalog'));
+        if($me->type == "Admin")
+        {
+    	   return view('bookForm',compact('me','id','book','type','allcatalog'));
+        }
+        else
+        {
+            return redirect('home');
+        }
     }
 
     public function submitBookForm(Request $request)

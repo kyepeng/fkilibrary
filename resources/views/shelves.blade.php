@@ -61,7 +61,7 @@ $(document).ready(function() {
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Catalog List</h1>
+                        <h1>Shelf List</h1>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@ $(document).ready(function() {
                         <ol class="breadcrumb text-right">
                             <li><a href="#">Resource Management</a></li>
                             <li><a href="#">Book Management</a></li>
-                            <li class="active">Catalog List</li>
+                            <li class="active">Shelf List</li>
                             
                         </ol>
                     </div>
@@ -121,7 +121,7 @@ $(document).ready(function() {
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <strong class="card-title">Catalog List</strong>
+                    <strong class="card-title">Shelf List</strong>
                 </div>
                 <div class="card-body">
 

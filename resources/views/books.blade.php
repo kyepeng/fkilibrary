@@ -27,7 +27,7 @@ $(document).ready(function() {
             { data: 'bookName', title: 'Name'},
             { data: 'ISBN', title: 'ISBN'},
             { data: 'description', title: 'Description'},
-            { data: 'price', title: 'Price'},
+            { data: 'price', title: 'Price (RM)'},
             { data: 'quantity', title: 'Qty'},
             { data: 'catalog', title: 'Catalog'},
             { data: 'shelf', title: 'Shelf'},
@@ -203,7 +203,7 @@ $(document).ready(function() {
                 <input type="text" name="ISBN" class="form-control">
                 <label>Description</label>
                 <input type="text" name="description" class="form-control">
-                <label>Price</label>
+                <label>Price (RM)</label>
                 <input type="number" name="price" class="form-control">
                 <label>Quantity</label>
                 <input type="number" name="quantity" class="form-control">

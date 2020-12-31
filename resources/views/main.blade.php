@@ -30,7 +30,7 @@
       /*left: 15%;*/
     }
     .carouselImage{
-      margin-left: 7%;
+      /*margin-left: 5%;*/
       width: 80px;
       height: 100px;
     }

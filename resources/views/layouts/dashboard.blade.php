@@ -63,9 +63,9 @@
         }
 
         .dt-buttons a.btn.btn-default{
-            border: 1px solid black;
             margin-bottom: 10px;
-            color: black;
+            color: white;
+            background: #1A54E4;
         }
 
         .dt-buttons a.btn.btn-default:hover{
@@ -201,7 +201,9 @@
                         </div>
                         @if( Auth::check() )
                         <a href="{{url('report')}}">Report</a>
+                        @if($me->type == "Student")
                         <a href="{{url('reservelist')}}">Reserve List</a>
+                        @endif
                         @endif
                     </div>
 
@@ -223,7 +225,9 @@
 
                         <div class="user-menu dropdown-menu">
                             @if(Auth::check())
+                            @if($me->type == "Student")
                             <a class="nav-link" href="{{url('profile')}}"><i class="fa fa-user"></i>My Profile</a>
+                            @endif
                             <a class="nav-link" href="{{url('logout')}}"><i class="fa fa-power-off"></i>Logout</a>
                             @else
                             <a class="nav-link" href="{{url('login')}}"><i class="fa fa-power-off"></i>Login</a>

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Model;
+use App\User;
 
 class UserTableSeeder extends Seeder
 {
@@ -23,7 +23,7 @@ class UserTableSeeder extends Seeder
         	'name' => 'fkico',
         	'type' => 'Coordinator',
         	'email' => 'fkico@fkilibrary.com',
-        	'password' => bcrypt('admin123')
+        	'password' => bcrypt('fkico123')
         ]);
     }
 }
