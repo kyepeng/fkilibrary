@@ -200,7 +200,7 @@ class BookLogController extends Controller
         }
         else
         {
-            return redirect('home');
+            return redirect('denied');
         }
     }
 

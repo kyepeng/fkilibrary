@@ -50,17 +50,21 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-       
+       $messages = [
+        'matric.unique' => 'Matric Has Been Registered',
+        'matric.regex' => 'Wrong Matric Number Format'
+       ];
+
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'gender'=>'required',
-            'matric'=>'required|unique:users|max:10|min:10|regex:/^BI[1-9]+$/' ,
+            'matric'=>'required|unique:users|max:10|min:10|regex:/^BI[0-9]+$/' ,
             'year'=>'required',
             'course'=>'required',
             'phone'=>'required|regex:/^(01)[0-46-9]*[0-9]{7,8}$/|max:11|min:10',
             'password' => 'required|min:6|confirmed',
-        ]);
+        ],$messages);
     }
 
     /**

@@ -7,7 +7,8 @@
         height: 400px;
         border-radius: 16px;
         margin: 5px;
-        padding: 10px;
+        padding: 15px;
+        text-align: center;
     }
 </style>
 <div class="content">
@@ -264,7 +265,7 @@ $(document).ready(function() {
     responsive: [{
       options: {
         chart: {
-          width: 200
+          // width: 200
         },
         legend: {
           position: 'bottom'
@@ -284,18 +285,6 @@ $(document).ready(function() {
           return "RM " + value;
         }
       },
-    noData: {
-      text: undefined,
-      align: 'center',
-      verticalAlign: 'middle',
-      offsetX: 0,
-      offsetY: 0,
-      style: {
-        color: undefined,
-        fontSize: '14px',
-        fontFamily: undefined
-      }
-    },
     colors:['#f24b72']
     };
 

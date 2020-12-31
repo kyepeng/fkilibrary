@@ -67,6 +67,10 @@ Route::group(['middleware' => ['auth']], function()
 		return view('layouts.success');
 	});
 
+	Route::get('denied',function(){
+		return view('layouts.denied');
+	});
+
 	Route::get('logout','Auth\LoginController@logout');
 });
 

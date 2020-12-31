@@ -27,7 +27,7 @@ $(document).ready(function() {
             { data: 'name', title: 'Name'},
             { data: 'email', title: 'Email'},
             { data: 'matric', title: 'Matric'},
-            { data: 'course', title: 'Course'},
+            { data: 'courseName', title: 'Course'},
             { data: 'year', title: 'Year'},
             { data: 'gender', title: 'Gender'},
             { data: 'phone', title: 'Phone'},
