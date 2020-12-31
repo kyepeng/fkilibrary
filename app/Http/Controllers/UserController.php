@@ -30,7 +30,8 @@ class UserController extends Controller
 
         $list = DB::table('users')
         ->leftjoin('courses','courses.id','=','users.course')
-        ->select('id','name','email','matric','gender','year',DB::raw('CONCAT(course_code,course_name) as courseName'),'phone')
+        ->select('users.id','name','email','matric','gender','year',DB::raw('CONCAT(course_code,course_name) as courseName'),'phone')
+        ->where('users.type','Student')
         ->get();
 
         return Datatables::of($list)

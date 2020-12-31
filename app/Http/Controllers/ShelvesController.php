@@ -32,7 +32,7 @@ class ShelvesController extends Controller
     	$me = (new CommonController)->thisuser();
 
         $list = DB::table('shelves')
-        ->select(DB::raw('"" as no'),'id','shelf','row','column','displayName',DB::raw('"" as action'))
+        ->select(DB::raw('"" as no'),'id','shelf','row','displayName',DB::raw('"" as action'))
         ->get();
 
         return Datatables::of($list)
