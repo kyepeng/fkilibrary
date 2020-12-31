@@ -131,6 +131,10 @@ $(document).ready(function() {
     title:{
         text: "Book Log"
     },
+    legend:{
+      show: 'true',
+      position : 'bottom'
+    },
     colors: ['#022CD6','#74FF00','#DA2C06']
     };
 
@@ -192,6 +196,10 @@ $(document).ready(function() {
     },
     dataLabels: {
         enabled: false
+    },
+    legend:{
+      show: 'true',
+      position : 'bottom'
     },
     colors:['#f24b72']
     };

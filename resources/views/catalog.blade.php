@@ -20,7 +20,8 @@ $(document).ready(function() {
         columnDefs: [
         { "visible": false, "targets": [1] }, 
         {"className": "dt-center", "targets": "_all"},
-        { "width": "2%", "targets": [0] }
+        { "width": "2%", "targets": [0] },
+        { "width": "20%", "targets": [-1] }
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
@@ -40,7 +41,7 @@ $(document).ready(function() {
         },
         buttons: [
             {
-                text: 'New',
+                text: 'Add',
                 action: function ( e, dt, node, config ) {
                     openModal(this);
                 }

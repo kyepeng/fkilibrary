@@ -30,7 +30,7 @@
       /*left: 15%;*/
     }
     .carouselImage{
-      /*margin-left: 5%;*/
+      margin-left: 5%;
       width: 80px;
       height: 100px;
     }
@@ -49,14 +49,14 @@
     }
 
     #books.carousel{
-      position: fixed;
-      top: 60vh;
+      /*position: fixed;*/
+      top: 20vh;
       width: 100%;
     }
 
     #catalog.carousel{
-      position: fixed;
-      top: 20vh;
+      /*position: fixed;*/
+      top: 10vh;
       width: 100%;
     }
 

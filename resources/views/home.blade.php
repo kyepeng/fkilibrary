@@ -4,10 +4,10 @@
 <style type="text/css">
     .chart{
         border: 1px solid grey;
-        height: 400px;
+        height: 50vh;
         border-radius: 16px;
         margin: 5px;
-        padding: 15px;
+        padding: 5px;
         text-align: center;
     }
 </style>
@@ -183,6 +183,10 @@ $(document).ready(function() {
     title:{
         text: "Total Students"
     },
+    legend:{
+      show: 'true',
+      position : 'bottom'
+    },
     colors: ['#0a094f','#0059ff','#00aeff','#00ffe1']
     };
 
@@ -216,13 +220,17 @@ $(document).ready(function() {
       breakpoint: 480,
       options: {
         chart: {
-          height: 350
+          height: 200 
         },
         legend: {
           position: 'bottom'
         }
       }
     }],
+    legend:{
+      show: 'true',
+      position : 'bottom'
+    },
     title:{
         text: "Book Log Today"
     },
@@ -265,7 +273,7 @@ $(document).ready(function() {
     responsive: [{
       options: {
         chart: {
-          // width: 200
+          height: 350
         },
         legend: {
           position: 'bottom'
@@ -277,6 +285,10 @@ $(document).ready(function() {
     },
     title:{
         text: "Fine Collected Today"
+    },
+    legend:{
+      show: 'true',
+      position : 'bottom'
     },
     dataLabels: {
         enabled: false,

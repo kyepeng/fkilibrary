@@ -44,7 +44,7 @@ $(document).ready(function() {
         },
         buttons: [
             {
-                text: 'New',
+                text: 'Add',
                 action: function ( e, dt, node, config ) {
                     openModal(this);
                 }
