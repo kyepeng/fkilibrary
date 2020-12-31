@@ -34,7 +34,7 @@ $(document).ready(function() {
             { data: 'action', title : 'Action'}
         ],
         initComplete: function () {
-                
+            
                 $('tr.search input').on('keyup', function () {
                         var index = $(this).attr('name');
                         oTable.columns(index).search($(this).val()).draw();
