@@ -4,7 +4,7 @@
 <style type="text/css">
     .chart{
         border: 1px solid grey;
-        height: 400px;
+        height: 450px;
         border-radius: 16px;
         margin: 5px;
         padding: 10px;

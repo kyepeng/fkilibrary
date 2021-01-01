@@ -62,10 +62,9 @@ Route::group(['middleware' => ['auth']], function()
 	//Reserve 
 	Route::get('reservelist','BookController@reservelist');
 	Route::get('getReserveData','BookController@getReserveData');
+	Route::post('deleteReserveList/{id}','BookController@deleteReserveList');
 
-	Route::get('successPage',function(){
-		return view('layouts.success');
-	});
+	Route::get('success/{url?}','BookLogController@success');
 
 	Route::get('denied',function(){
 		return view('layouts.denied');

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Book;
 use App\Shelf;
 use App\Catalog;
+use App\Reserve;
 
 class BookController extends Controller
 {
@@ -125,6 +126,11 @@ class BookController extends Controller
         }
     }
 
+    public function deleteReserveList($id)
+    {
+        Reserve::find($id)->delete();
+    }
+
     public function reservelist()
     {
         $me = (new CommonController)->thisuser();
@@ -147,6 +153,7 @@ class BookController extends Controller
         ->leftjoin('books','books.id','=','reserves.bookId')
         ->select('reserves.id','quantity','bookId','books.ISBN','books.bookName','catalogId','shelfId','reserves.created_at')
         ->where('checked',0)
+        ->where('reserves.userId',$me->id)
         ->get();
 
         return Datatables::of($list)
@@ -169,7 +176,7 @@ class BookController extends Controller
 
             if($list->quantity > $unreturn->borrowed)
             {
-                return '<button class="btn btn-primary" onclick="openModal(this)" data-id="'.$list->id.'">Borrow</button>';
+                return '<button class="btn btn-primary" onclick="openModal(this)" data-type="Borrow" data-id="'.$list->id.'">Borrow</button> <button class="btn btn-danger" onclick="openModal(this)" data-type="Delete" data-id="'.$list->id.'">Delete</button>';
             }
             else
             {

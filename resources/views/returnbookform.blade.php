@@ -70,7 +70,7 @@ $(document).ready(function() {
               </div>
               <div class="modal-body">
 
-                <form id="upload_form" enctype="multipart/form-data" method="POST" action="">
+                <form id="upload_form" enctype="multipart/form-data" method="POST" action="{{url('updateBookLogs')}}">
                   {{ csrf_field() }}
                   <div id="modal_text">
                     
@@ -132,7 +132,7 @@ $(document).ready(function() {
                                 </div>
                                 <div class="col-md-6">
                                     <label>Borrow Date</label>
-                                    <input type="text" id="start_date" readonly="" class="form-control">
+                                    <input type="text" id="start_date" name="start_date" readonly="" class="form-control">
                                 </div>
                                 <div class="col-md-6">
                                     <label>End Date</label>
@@ -179,6 +179,13 @@ $(document).ready(function() {
 
     function Submit()
     {   
+        var type = $('#type').val();
+        var url = "";
+        if(type !== "Pay")
+        {
+            url = '{{url("success")}}/returnbookForm'
+        }
+
         var param = {
             'data' : new FormData($("#book_form")[0]),
             'myurl' : "{{ url('/updateBookLogs') }}",
@@ -188,12 +195,12 @@ $(document).ready(function() {
             'onSuccess' : "Data Updated",
             'refresh' : 0,
             'hide' : 1,
-            'loader' : 'ajaxloader'
+            'loader' : 'ajaxloader',
+            'redirect' : url
         };
 
         PostAjax(param);
 
-        var type = $('#type').val();
         if(type == "Pay")
         {
             $('#payBtn').hide();

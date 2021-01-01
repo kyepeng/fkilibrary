@@ -21,13 +21,14 @@ $(document).ready(function() {
             }
         },
         columnDefs: [
-        { "visible": false, "targets": [] }, 
+        { "visible": false, "targets": [{{$me->type == "Student" ? 1 : ''}}] }, 
         { "width": "2%", "targets": [0] },
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
             { data: 'user', title:"Student"},
-            { data: 'book', title:"Book"},
+            { data: 'ISBN', title:"ISBN"},
+            { data: 'bookName', title:"bookName"},
             { data: 'start_date', title:"Borrow Date"},
             { data: 'end_date', title:"Return Date"},
             { data: 'fine', title:"Fine"},

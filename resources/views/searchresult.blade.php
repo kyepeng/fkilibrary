@@ -24,7 +24,7 @@ $(document).ready(function() {
         columnDefs: [
         { "visible": false, "targets": [1] }, 
         { "width": "2%", "targets": [0] },
-        { "width": "15%", "targets": [-1] },
+        { "width": "20%", "targets": [-1] },
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
@@ -35,6 +35,7 @@ $(document).ready(function() {
             { data: 'available', title: 'Available'},
             { data: 'catalog', title: 'Catalog'},
             { data: 'shelf', title: 'Shelf'},
+            { data: 'image', title: 'Image'},
             { data: 'action', title : 'Action'}
         ],
         initComplete: function () {

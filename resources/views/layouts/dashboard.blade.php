@@ -272,6 +272,7 @@
           - hide (1/0)
           - onSuccess (success message)
           - loader (loader id)
+          - redirect 
         */
 
         //set default values
@@ -306,6 +307,10 @@
                 showMessage("alert",message,param.modal);
                 $('#'+param.button).prop('disabled',false);
                 $('#'+param.loader).hide();
+                if(param.redirect)
+                {
+                    window.location.href = param.redirect;
+                }
             },
             error : function(data){
                 // if(param.hide)
@@ -347,6 +352,11 @@
         window.location.href = "{{url('searchresult')}}?usersearch=" + search;
     }
     
+    $('input[name="usersearch"]').keyup(function(e){
+        if (e.which == 13) {
+            Search();
+        }
+    });
     </script>
 
 

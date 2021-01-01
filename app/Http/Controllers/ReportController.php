@@ -83,7 +83,7 @@ class ReportController extends Controller
      	}
 
      	$list = DB::table('book_logs')
-     	->select('id','userId','bookId','start_date','end_date','fine','paid')
+     	->select('id','userId','bookId','start_date','end_date','fine','paid','created_at')
      	->get();
 
 		return view('finereport',compact('me','start','end','list','allcatalog'));
@@ -94,10 +94,11 @@ class ReportController extends Controller
 		$me = (new CommonController)->thisuser();
      	$student = $me->type == "Student" ? " AND book_logs.userId =".$me->id : "";
      	//default show today
-     	$cond = "paid > 0 AND CAST(updated_at as date) BETWEEN '".$request->startdate."' AND '".$request->enddate."' ".$student;
+     	$cond = "paid > 0 AND CAST(book_logs.updated_at as date) BETWEEN '".$request->startdate."' AND '".$request->enddate."' ".$student;
 
         $list = DB::table('book_logs')
-        ->select('id','userId','bookId','start_date','end_date','fine','paid')
+        ->leftjoin('books','books.id','book_logs.bookId')
+        ->select('book_logs.id','userId','bookId','start_date','end_date','fine','paid','books.ISBN','books.bookName')
         ->whereRaw($cond)
         ->get();
 
@@ -107,11 +108,6 @@ class ReportController extends Controller
         	$user = User::find($list->userId);
 
         	return $user->name;
-        })
-        ->addColumn('book', function($list){
-        	$book = Book::find($list->bookId);
-
-        	return $book->ISBN.' - '.$book->bookName;
         })
         ->make(true);
 	}
@@ -131,7 +127,7 @@ class ReportController extends Controller
      	}
 
      	$list = DB::table('book_logs')
-     	->select('id','userId','bookId','start_date','end_date','status')
+     	->select('id','userId','bookId','start_date','end_date','fine','status','created_at')
      	->get();
 
 		return view('logreport',compact('me','start','end','list','allcatalog'));
@@ -142,11 +138,12 @@ class ReportController extends Controller
 		$me = (new CommonController)->thisuser();
      	$student = $me->type == "Student" ? " AND book_logs.userId =".$me->id : "";
      	//default show today
-     	$cond = "CAST(created_at as date) BETWEEN '".$request->startdate."' AND '".$request->enddate."' ".$student;
+     	$cond = "CAST(book_logs.created_at as date) BETWEEN '".$request->startdate."' AND '".$request->enddate."' ".$student;
 
         $list = DB::table('book_logs')
-        ->join(DB::raw('(SELECT Max(id) as maxid,bookId,userId FROM book_logs GROUP BY bookId,userId) as max'),'max.maxid','book_logs.id')
-        ->select('id','book_logs.userId','book_logs.bookId','start_date','end_date','status')
+        ->leftjoin(DB::raw('(SELECT Max(id) as maxid,bookId,userId FROM book_logs GROUP BY bookId,userId) as max'),'max.maxid','book_logs.id')
+        ->leftjoin('books','books.id','book_logs.bookId')
+        ->select('book_logs.id','book_logs.userId','book_logs.bookId','start_date','end_date','fine','status','books.ISBN','books.bookName')
         ->whereRaw($cond)
         ->get();
 
@@ -155,12 +152,7 @@ class ReportController extends Controller
         ->addColumn('user', function($list){
         	$user = User::find($list->userId);
 
-        	return $user->name;
-        })
-        ->addColumn('book', function($list){
-        	$book = Book::find($list->bookId);
-
-        	return $book->ISBN.' - '.$book->bookName;
+        	return $user->matric;
         })
         ->addColumn('badge', function($list){
         	$class = "badge badge-success";

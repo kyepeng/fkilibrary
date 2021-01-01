@@ -44,7 +44,7 @@
         <i class="checkmark">✓</i>
       </div>
         <h1>Success</h1> 
-        <p>Please check your E-mail for the statement<br><a href="{{url('main')}}"><span class="fa fa-2x fa-home"></span></a>
+        <p>Please check your E-mail for the statement<br><a href="{{$url}}"><span class="fa fa-2x fa-home"></span></a>
       </div>
     </body>
 </html>

@@ -21,7 +21,7 @@ class SearchController extends Controller
         $catalog = $request->catalog ?: "";
 
         $list = DB::table('books')
-        ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','quantity',DB::raw('"" as catalog'),DB::raw('"" as shelf'),DB::raw('"" as action'))
+        ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','quantity',DB::raw('"" as catalog'),DB::raw('"" as shelf'),'image_path',DB::raw('"" as action'))
         ->get();
 
         return view('searchresult',compact('list','usersearch','book','catalog','me','allcatalog'));
@@ -47,7 +47,7 @@ class SearchController extends Controller
     	}
   
         $list = DB::table('books')
-        ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','price','quantity','shelfId','catalogId',DB::raw('"" as action'))
+        ->select(DB::raw('"" as no'),'id','bookName','ISBN','description','price','quantity','shelfId','catalogId','image_path',DB::raw('"" as action'))
         ->whereRaw($cond)
         ->get();
 
@@ -82,11 +82,24 @@ class SearchController extends Controller
 	        ->first();
 
 	        $type = $list->quantity > $unreturn->borrowed ? "Borrow" : "Reserve";
-            $url = url('bookForm').'/'.$list->id."/".$type;
-
-            return '<a href="'.$url.'" class="btn btn-primary">'.$type.'</a>';
+            $return = '<a href="'. url('bookForm').'/'.$list->id."/Reserve".'" class="btn btn-warning">Reserve</a>';
+            if($list->quantity > $unreturn->borrowed)
+            {
+                $return .=  ' <a href="'. url('bookForm').'/'.$list->id."/Borrow".'" class="btn btn-primary">Borrow</a>';
+            }
+            return $return;
         })
-        ->rawColumns(['action','available'])
+        ->addColumn('image', function($list){
+            if($list->image_path)
+            {
+                return '<img src="'.asset('storage/public/book/'.$list->image_path).'" width="50" height="50">';
+            }
+            else
+            {
+                return "-";
+            }
+        })
+        ->rawColumns(['action','available','image'])
         ->make(true);
     }
 }

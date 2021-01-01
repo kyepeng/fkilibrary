@@ -103,8 +103,9 @@ $(document).ready(function() {
                     <input type="hidden" name="bookId" id="bookId">
                     <input type="hidden" name="userId" value="{{$me->id}}">
                     <input type="hidden" name="start_date" value="{{date('Y-m-d')}}">
-                    <input type="hidden" name="start_date" value="{{date('Y-m-d',strtotime('today + 7 days'))}}">
+                    <input type="hidden" name="end_date" value="{{date('Y-m-d',strtotime('today + 7 days'))}}">
                     <input type="hidden" name="status" value="Borrow">
+                    <input type="hidden" name="type" id="type">
                 </div>
                 <br><br>
                 <div class="modal-footer">
@@ -175,25 +176,38 @@ $(document).ready(function() {
     {
         var id = $(button).data('id');
         var data =  oTable.row("#"+id).data();
+        var type = $(button).data('type');
         closeMessageBlock();
         $('#submitBtn').prop('disabled',false);
         $('#id').val(data.id);
         $('#bookId').val(data.id);
+        $('#type').val(type);
         $('#ActionModal').modal('show');
     }
 
     function Submit()
     {   
+        var url = "{{ url('/submitBookForm') }}";
+        var type = $('#type').val();
+        var id = $('#id').val();
+        var redirect = '{{url("success")}}/reservelist';
+        if(type == "Delete")
+        {
+            url = "{{url('deleteReserveList')}}/"+id;
+            redirect = "";
+        }
+
         var param = {
             'data' : new FormData($("#upload_form")[0]),
-            'myurl' : "{{ url('/submitBookForm') }}",
+            'myurl' : url,
             'form' : 1,
             'button' : "submitBtn",
             'modal' : "ActionModal",
             'onSuccess' : "Data Updated",
             'refresh' : 0,
             'hide' : 1,
-            'loader' : 'ajaxloader'
+            'loader' : 'ajaxloader',
+            'redirect' : redirect
         };
 
         PostAjax(param);

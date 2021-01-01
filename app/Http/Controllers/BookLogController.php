@@ -149,14 +149,15 @@ class BookLogController extends Controller
         if($request->type == "Renew")
         {
         	$status = "Borrow";
+            $end = date('Y-m-d',strtotime('today + 7 days'));
         }
         else
         {
         	$status = "Returned";
+            $end = date('Y-m-d');
         }
 
         $request->merge(['status' => $status]);
-
         //Validator
         $rules = [
             'bookId' => 'required',
@@ -179,7 +180,7 @@ class BookLogController extends Controller
             return response()->json($validator->errors(), 404);
         }
 
-        $request->merge(['start_date' => date('Y-m-d') , 'end_date' => date('Y-m-d',strtotime('today + 7 days'))]);
+        $request->merge(['end_date' => $end]);
 
         $created = BookLog::create($request->except('id','_token'));
 
@@ -207,7 +208,6 @@ class BookLogController extends Controller
     public function submitBookForm(Request $request)
     {
     	$me = (new CommonController)->thisuser();
-
         if($request->status == "Borrow")
         {
             if($request->id)
@@ -215,9 +215,9 @@ class BookLogController extends Controller
                 Reserve::find($request->id)->update(['checked'=>1]);
             }
 
-    	   $created = BookLog::create($request->except('_token','id'));
+    	   $created = BookLog::create($request->except('_token','id','type'));
     	   $this->sendEmail($created,'Issue');
-           return view('layouts.success');
+           return $this->success();
         }
         else
         {
@@ -227,9 +227,21 @@ class BookLogController extends Controller
 
     }
 
+    public function success($url = null)
+    {
+        if(!$url)
+        {
+            $url = '/';
+        }
+
+        $url = url($url);
+    
+
+        return view('layouts.success',compact('url'));
+    }
+
     public function sendEmail($created,$type)
     {   
-
         $text = "issued";
         $blade = "emails.bookissue";
         if($type == "Return")
@@ -243,8 +255,8 @@ class BookLogController extends Controller
             $blade = "emails.update"; 
         }
         $title = "You’ve ".$text." a book on ".date('Y-m-d');
-
-        $detail = BookLog::where('book_logs.id',$created->id)->join('books','books.id','=','book_logs.bookId')->join('users','users.id','=','book_logs.userId')->first();
+        $detail = Booklog::find($created->id);
+        $detail = BookLog::where('book_logs.id',$created->id)->leftjoin('books','books.id','=','book_logs.bookId')->leftjoin('users','users.id','=','book_logs.userId')->first();
 
         $fine = BookLog::where('userId',$detail->userId)
         ->where('bookId',$detail->bookId)
