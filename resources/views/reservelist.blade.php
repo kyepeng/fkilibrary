@@ -17,7 +17,8 @@ $(document).ready(function() {
             "url" : "{{ url('getReserveData') }}"
         },
         columnDefs: [
-        { "width": "2%", "targets": [0] }
+        { "width": "2%", "targets": [0] },
+        { "width": "25%", "targets": [-1] }
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},

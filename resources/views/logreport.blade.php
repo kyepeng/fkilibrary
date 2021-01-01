@@ -26,7 +26,7 @@ $(document).ready(function() {
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},
-            { data: 'user', title:"Student"},
+            { data: 'matric', title:"Student"},
             { data: 'ISBN', title:"ISBN"},
             { data: 'bookName', title:"Book"},
             { data: 'start_date', title:"Borrow Date"},

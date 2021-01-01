@@ -21,7 +21,7 @@ $(document).ready(function() {
         { "visible": false, "targets": [1] }, 
         {"className": "dt-center", "targets": "_all"},
         { "width": "2%", "targets": [0] },
-        { "width": "20%", "targets": [-1] }
+        { "width": "25%", "targets": [-1] }
         ],
         columns: [
             { data: 'DT_RowIndex', title:"No"},

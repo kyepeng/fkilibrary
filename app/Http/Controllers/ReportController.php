@@ -97,18 +97,14 @@ class ReportController extends Controller
      	$cond = "paid > 0 AND CAST(book_logs.updated_at as date) BETWEEN '".$request->startdate."' AND '".$request->enddate."' ".$student;
 
         $list = DB::table('book_logs')
-        ->leftjoin('books','books.id','book_logs.bookId')
-        ->select('book_logs.id','userId','bookId','start_date','end_date','fine','paid','books.ISBN','books.bookName')
+        ->leftjoin('books','books.id','=','book_logs.bookId')
+        ->leftjoin('users','users.id','=','book_logs.userId')
+        ->select('book_logs.id','userId','bookId','start_date','end_date','fine','paid','books.ISBN','books.bookName',DB::raw('IFNULL(matric,"User Deleted") as matric'))
         ->whereRaw($cond)
         ->get();
 
         return Datatables::of($list)
         ->addIndexColumn()
-        ->addColumn('user', function($list){
-        	$user = User::find($list->userId);
-
-        	return $user->name;
-        })
         ->make(true);
 	}
 
@@ -141,19 +137,15 @@ class ReportController extends Controller
      	$cond = "CAST(book_logs.created_at as date) BETWEEN '".$request->startdate."' AND '".$request->enddate."' ".$student;
 
         $list = DB::table('book_logs')
-        ->leftjoin(DB::raw('(SELECT Max(id) as maxid,bookId,userId FROM book_logs GROUP BY bookId,userId) as max'),'max.maxid','book_logs.id')
-        ->leftjoin('books','books.id','book_logs.bookId')
-        ->select('book_logs.id','book_logs.userId','book_logs.bookId','start_date','end_date','fine','status','books.ISBN','books.bookName')
+        ->join(DB::raw('(SELECT Max(id) as maxid,bookId FROM book_logs GROUP BY bookId,userId) as max'),'max.maxid','=','book_logs.id')
+        ->leftjoin('books','books.id','=','book_logs.bookId')
+        ->leftjoin('users','users.id','=','book_logs.userId')
+        ->select('book_logs.id','book_logs.userId','book_logs.bookId','start_date','end_date','fine','status','books.ISBN','books.bookName',DB::raw('IFNULL(matric,"User Deleted") as matric'))
         ->whereRaw($cond)
         ->get();
 
         return Datatables::of($list)
         ->addIndexColumn()
-        ->addColumn('user', function($list){
-        	$user = User::find($list->userId);
-
-        	return $user->matric;
-        })
         ->addColumn('badge', function($list){
         	$class = "badge badge-success";
         	if($list->status == "Borrow" && (date('Y-m-d') < $list->end_date) )

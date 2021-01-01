@@ -64,24 +64,14 @@ class BookLogController extends Controller
         $list = DB::table('book_logs')
         ->join(DB::raw('(SELECT Max(id) as maxid, bookId FROM book_logs GROUP BY bookId) as max'),'max.maxid','book_logs.id')
         // ->join('book_logs','book_logs.id','=','max.maxid')
-        ->select('book_logs.id','book_logs.bookId','userId','start_date','end_date','fine','paid','status')
+        ->leftjoin('books','books.id','=','book_logs.bookId')
+        ->leftjoin('users','users.id','=','book_logs.userId')
+        ->select('book_logs.id','book_logs.bookId','userId','start_date','end_date','fine','paid','status','bookName','ISBN',DB::raw('IFNULL(matric,"User Deleted") as matric'))
         ->whereRaw($cond)
         ->get();
 
         return Datatables::of($list)
         ->addIndexColumn()
-        ->addColumn('book', function($list){
-            $book = Book::find($list->bookId);
-            return "$book->bookName";
-        })
-        ->addColumn('ISBN',function($list){
-            $book = Book::find($list->bookId);
-            return "$book->ISBN";
-        })
-        ->addColumn('student', function($list){
-            $user = User::find($list->userId);
-            return $user->matric;
-        })
         ->addColumn('badge', function($list){
         	$class = "badge badge-success";
         	if($list->status == "Borrow" && (date('Y-m-d') <= $list->end_date) )
