@@ -1,7 +1,14 @@
 @extends('layouts.dashboard')    
 
 @section('content')
-
+<style type="text/css">
+    .buttons-pdf{
+        background-color: #FF8134 !important;
+    }
+    .buttons-excel{
+        background-color: #00A227 !important;
+    }
+</style>
 <script type="text/javascript">
 var oTable;
 $(document).ready(function() {
@@ -43,6 +50,26 @@ $(document).ready(function() {
 
         },
         buttons: [
+            {
+                extend: 'pdf',
+                title: 'FKILibrary Log Report',
+                customize: function (doc) {
+                    doc.styles.tableBodyEven.alignment = 'center';
+                    doc.styles.tableBodyOdd.alignment = 'center';
+                    doc.content[1].table.widths = 
+                    Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                },
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'excel',
+                title: 'FKILibrary Log Report',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            }
         ]
     });
 
@@ -55,7 +82,7 @@ $(document).ready(function() {
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Fine Report</h1>
+                        <h1>Log Report</h1>
                     </div>
                 </div>
             </div>
